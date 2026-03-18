@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <title>小白占星｜塔羅抽牌</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: #1e1b2e;
-      color: white;
-      text-align: center;
-      padding: 30px;
-    }
-    textarea, select, button {
-      padding: 10px;
-      margin: 10px;
-      width: 300px;
-      border-radius: 10px;
-      border: none;
-    }
-    button {
-      background: gold;
-      cursor: pointer;
-    }
-    .card {
-      margin: 20px;
-      padding: 20px;
-      background: #2f2a4a;
-      border-radius: 15px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>小白占星｜塔羅抽牌</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #1e1b2e;
+  color: white;
+  text-align: center;
+  padding: 30px;
+}
+
+textarea, select, button {
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  background: gold;
+  cursor: pointer;
+}
+
+.card {
+  margin: 20px;
+  padding: 20px;
+  background: #2f2a4a;
+  border-radius: 15px;
+}
+</style>
 </head>
+
 <body>
 
 <h1>🔮 小白占星塔羅</h1>
@@ -37,8 +42,8 @@
 <textarea id="question" placeholder="輸入你的問題"></textarea><br>
 
 <select id="type">
-  <option value="1">抽一張牌</option>
-  <option value="3">三張牌</option>
+<option value="1">抽一張牌</option>
+<option value="3">三張牌（過去 / 現在 / 未來）</option>
 </select><br>
 
 <button onclick="draw()">開始抽牌</button>
@@ -46,54 +51,172 @@
 <div id="result"></div>
 
 <script>
+
+// ===== 卡牌 =====
 const cards = [
 "愚者","魔術師","女祭司","皇后","皇帝","教皇","戀人","戰車",
 "力量","隱者","命運之輪","正義","吊人","死神","節制","惡魔",
 "高塔","星星","月亮","太陽","審判","世界"
 ];
 
+// ===== 牌義 =====
 const meanings = {
-"愚者":"新的開始，勇敢前進",
-"魔術師":"你有能力創造結果",
-"女祭司":"相信你的直覺",
-"皇后":"事情正在成長",
-"皇帝":"建立穩定與秩序",
-"教皇":"遵循傳統或學習",
-"戀人":"做出重要選擇",
-"戰車":"全力衝刺會成功",
-"力量":"溫柔但堅定",
-"隱者":"需要思考與沉澱",
-"命運之輪":"轉機出現",
-"正義":"公平與因果",
-"吊人":"暫停與等待",
-"死神":"結束也是開始",
-"節制":"保持平衡",
-"惡魔":"被束縛",
-"高塔":"突發變化",
-"星星":"希望與療癒",
-"月亮":"不安與迷惘",
-"太陽":"成功與喜悅",
-"審判":"重大決定",
-"世界":"完成與圓滿"
+
+"愚者": {
+  upright: "你其實可以開始了，不用等完全準備好。",
+  reversed: "你可能太隨便或還沒想清楚後果。"
+},
+
+"魔術師": {
+  upright: "你是有能力的，現在差的是行動。",
+  reversed: "你在懷疑自己，或沒有用對方向。"
+},
+
+"女祭司": {
+  upright: "你其實早就知道答案。",
+  reversed: "你在逃避你的直覺。"
+},
+
+"皇后": {
+  upright: "事情會慢慢變好，但需要時間。",
+  reversed: "你忽略了自己的感受。"
+},
+
+"皇帝": {
+  upright: "現在需要穩住，建立規則與結構。",
+  reversed: "你太想控制，反而失衡。"
+},
+
+"教皇": {
+  upright: "照著既有方式走比較安全。",
+  reversed: "你已經不想照規則活了。"
+},
+
+"戀人": {
+  upright: "這是一個需要誠實面對的選擇。",
+  reversed: "你內心還沒準備好選擇。"
+},
+
+"戰車": {
+  upright: "現在可以前進，而且會成功。",
+  reversed: "你方向不穩，容易失控。"
+},
+
+"力量": {
+  upright: "你其實很穩，只是你還沒發現。",
+  reversed: "你開始懷疑自己。"
+},
+
+"隱者": {
+  upright: "你需要時間沉澱與思考。",
+  reversed: "你已經想太久了。"
+},
+
+"命運之輪": {
+  upright: "局勢正在轉變，而且對你有利。",
+  reversed: "時機還沒到。"
+},
+
+"正義": {
+  upright: "事情會回到公平。",
+  reversed: "有人沒有誠實面對。"
+},
+
+"吊人": {
+  upright: "現在需要暫停。",
+  reversed: "你卡太久了。"
+},
+
+"死神": {
+  upright: "該結束了，新的才會開始。",
+  reversed: "你在拖著不放。"
+},
+
+"節制": {
+  upright: "慢慢來才是最好的方式。",
+  reversed: "你的節奏亂掉了。"
+},
+
+"惡魔": {
+  upright: "你被某個狀態綁住了。",
+  reversed: "你開始清醒了。"
+},
+
+"高塔": {
+  upright: "事情會突然改變。",
+  reversed: "問題早就存在。"
+},
+
+"星星": {
+  upright: "還有希望，而且會慢慢好。",
+  reversed: "你現在沒什麼信心。"
+},
+
+"月亮": {
+  upright: "事情還不清楚。",
+  reversed: "你開始看懂了。"
+},
+
+"太陽": {
+  upright: "會成功，而且很明顯。",
+  reversed: "還差一點點。"
+},
+
+"審判": {
+  upright: "你要做決定了。",
+  reversed: "你在逃避決定。"
+},
+
+"世界": {
+  upright: "事情會完成。",
+  reversed: "還沒結束。"
+}
+
 };
 
+// ===== 抽牌 =====
 function draw() {
+
   const type = document.getElementById("type").value;
   const result = document.getElementById("result");
   result.innerHTML = "";
 
+  const positions = ["過去 / 現況", "現在", "未來"];
+
+  let summary = "";
+
   for (let i = 0; i < type; i++) {
+
     const card = cards[Math.floor(Math.random()*cards.length)];
     const reverse = Math.random() < 0.5 ? "正位" : "逆位";
 
+    const meaning = meanings[card]
+      ? meanings[card][reverse === "正位" ? "upright" : "reversed"]
+      : "訊息形成中";
+
+    summary += meaning + " ";
+
     result.innerHTML += `
       <div class="card">
-        <h2>${card}（${reverse}）</h2>
-        <p>${meanings[card]}</p>
+        <h2>${type == 3 ? positions[i] : "結果"}</h2>
+        <h3>${card}（${reverse}）</h3>
+        <p>${meaning}</p>
       </div>
     `;
   }
+
+  // ===== 總結（這是關鍵升級）=====
+  result.innerHTML += `
+    <div class="card" style="background:#3b3560;">
+      <h2>✨ 小白整體解讀</h2>
+      <p>${summary}</p>
+      <p style="color:gold;">
+      👉 這件事的關鍵，不在外在，而在你怎麼面對自己現在的狀態。
+      </p>
+    </div>
+  `;
 }
+
 </script>
 
 </body>
