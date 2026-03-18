@@ -1,0 +1,363 @@
+import React, { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Sparkles, MoonStar, Stars, RotateCcw } from "lucide-react";
+
+const MAJOR_ARCANA = [
+  "愚者", "魔術師", "女祭司", "皇后", "皇帝", "教皇", "戀人", "戰車",
+  "力量", "隱者", "命運之輪", "正義", "吊人", "死神", "節制", "惡魔",
+  "高塔", "星星", "月亮", "太陽", "審判", "世界"
+];
+
+const SUITS = ["權杖", "聖杯", "寶劍", "錢幣"];
+const RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "侍者", "騎士", "皇后", "國王"];
+
+const CARD_MEANINGS = {
+  "愚者": {
+    upright: "新的開始、冒險、自由、相信直覺，代表一段未知但充滿可能性的旅程正要展開。",
+    reversed: "衝動、缺乏準備、逃避現實，提醒你不要只憑一時感覺行動。"
+  },
+  "魔術師": {
+    upright: "行動力、創造力、資源整合，代表你有能力把想法化為現實。",
+    reversed: "操控、虛張聲勢、能力分散，可能是想得多但沒有真正落地。"
+  },
+  "女祭司": {
+    upright: "直覺、內在智慧、觀察，提醒你先安靜下來感受真正的答案。",
+    reversed: "封閉、壓抑、忽略內心聲音，可能是不願面對真相。"
+  },
+  "皇后": {
+    upright: "豐盛、照顧、滋養、創造，代表事情有機會穩定成長。",
+    reversed: "過度依賴、情緒化、失衡，可能是照顧別人太多卻忽略自己。"
+  },
+  "皇帝": {
+    upright: "秩序、穩定、掌控、責任，代表需要建立規則與界線。",
+    reversed: "僵化、控制欲、壓迫感，可能是過度想掌控一切。"
+  },
+  "教皇": {
+    upright: "傳統、學習、信念、制度，代表從既有方法中得到幫助。",
+    reversed: "僵化教條、盲從、壓抑，提醒你不要只是照規則走。"
+  },
+  "戀人": {
+    upright: "選擇、連結、價值一致，代表你需要做出符合內心的決定。",
+    reversed: "關係失衡、價值衝突、猶豫不決，表示內外並不一致。"
+  },
+  "戰車": {
+    upright: "推進、勝利、意志力，代表事情有往前衝的力量。",
+    reversed: "失控、焦躁、方向混亂，可能是太急著前進反而偏掉。"
+  },
+  "力量": {
+    upright: "穩定、勇氣、溫柔的掌控，代表你有能力慢慢收服內在混亂。",
+    reversed: "自我懷疑、壓力過大、情緒失控，提醒你先穩住自己。"
+  },
+  "隱者": {
+    upright: "沉澱、思考、內省，代表你需要離開雜音，尋找真正答案。",
+    reversed: "孤立、封閉、卡住，可能是過度退縮不願再往前。"
+  },
+  "命運之輪": {
+    upright: "轉機、週期改變、順勢而為，代表命運的齒輪正在轉動。",
+    reversed: "卡關、反覆、時機未到，表示目前仍在不穩定週期裡。"
+  },
+  "正義": {
+    upright: "公平、平衡、因果、理性判斷，提醒你看清事實再下決定。",
+    reversed: "偏見、不平衡、逃避責任，可能有人沒有誠實面對問題。"
+  },
+  "吊人": {
+    upright: "等待、轉念、換角度，代表現在不是硬衝的時候。",
+    reversed: "拖延、無謂犧牲、停滯，可能已經卡太久卻不願改變。"
+  },
+  "死神": {
+    upright: "結束、轉化、脫胎換骨，代表舊階段真的該放下了。",
+    reversed: "抗拒改變、拖延結束、無法放手，表示新局面進不來。"
+  },
+  "節制": {
+    upright: "平衡、整合、穩定前進，代表用溫和持續的方式最有利。",
+    reversed: "失衡、過度、節奏混亂，提醒你重新調整生活或策略。"
+  },
+  "惡魔": {
+    upright: "執著、慾望、束縛、上癮，代表你可能被某種模式綁住。",
+    reversed: "鬆綁、清醒、脫離控制，表示你開始意識到問題所在。"
+  },
+  "高塔": {
+    upright: "突變、真相揭露、舊結構崩解，雖然混亂但有重建機會。",
+    reversed: "壓抑危機、內部崩塌、勉強維持，問題可能其實早已存在。"
+  },
+  "星星": {
+    upright: "希望、療癒、信念、遠景，代表未來仍值得期待。",
+    reversed: "失望、懷疑、能量低落，提醒你先找回內在希望。"
+  },
+  "月亮": {
+    upright: "不安、模糊、潛意識、情緒波動，表示事情還不夠清楚。",
+    reversed: "迷霧散去、真相浮現、情緒逐漸穩定，開始看見真實。"
+  },
+  "太陽": {
+    upright: "成功、清晰、活力、喜悅，代表事情有機會明朗且正向發展。",
+    reversed: "延遲的快樂、表面光亮內裡疲憊，可能還差最後一步。"
+  },
+  "審判": {
+    upright: "覺醒、召喚、重大決定，代表你到了該回應人生課題的時刻。",
+    reversed: "逃避、遲疑、自我否定，可能是不敢真正做出改變。"
+  },
+  "世界": {
+    upright: "完成、整合、圓滿，代表一個重要階段即將成熟結果。",
+    reversed: "未完成、差最後一步、循環未結束，表示事情還需要收尾。"
+  }
+};
+
+const positionLabels = {
+  1: ["抽牌結果"],
+  3: ["第一張：過去 / 現況", "第二張：現在 / 核心", "第三張：未來 / 發展"]
+};
+
+function buildDeck() {
+  const deck = [];
+  MAJOR_ARCANA.forEach((name) => deck.push({ name, arcana: "大阿爾克那" }));
+  SUITS.forEach((suit) => {
+    RANKS.forEach((rank) => {
+      deck.push({ name: `${suit}${rank}`, arcana: "小阿爾克那" });
+    });
+  });
+  return deck;
+}
+
+function shuffleDeck(deck) {
+  const arr = [...deck];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function getCardMeaning(cardName, orientation) {
+  if (CARD_MEANINGS[cardName]) {
+    return CARD_MEANINGS[cardName][orientation];
+  }
+
+  const suitMeanings = {
+    權杖: "偏向行動力、熱情、事業推進與意志。",
+    聖杯: "偏向情感、人際、直覺與內心感受。",
+    寶劍: "偏向思考、壓力、溝通、衝突與判斷。",
+    錢幣: "偏向金錢、工作、資源、現實與穩定。"
+  };
+
+  for (const suit of SUITS) {
+    if (cardName.startsWith(suit)) {
+      return orientation === "upright"
+        ? `這張牌屬於${suit}，${suitMeanings[suit]} 正位通常表示這股能量較順暢，事情有機會往正向發展。`
+        : `這張牌屬於${suit}，${suitMeanings[suit]} 逆位通常表示這股能量受阻、失衡，或你需要重新調整。`;
+    }
+  }
+
+  return "目前沒有這張牌的解釋。";
+}
+
+function drawCards(count) {
+  const deck = shuffleDeck(buildDeck());
+  return deck.slice(0, count).map((card) => ({
+    ...card,
+    orientation: Math.random() < 0.5 ? "upright" : "reversed"
+  }));
+}
+
+function TarotCard({ card, title, revealed }) {
+  const orientationLabel = card.orientation === "upright" ? "正位" : "逆位";
+  const meaning = getCardMeaning(card.name, card.orientation);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <Card className="rounded-3xl border-white/10 bg-white/10 text-white shadow-2xl backdrop-blur">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg text-amber-200">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AnimatePresence mode="wait">
+            {revealed ? (
+              <motion.div
+                key="revealed"
+                initial={{ rotateY: 90, opacity: 0 }}
+                animate={{ rotateY: 0, opacity: 1 }}
+                exit={{ rotateY: -90, opacity: 0 }}
+                transition={{ duration: 0.45 }}
+                className="space-y-4"
+              >
+                <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-amber-100/15 to-white/5 p-6 text-center shadow-inner">
+                  <div className="text-2xl font-bold tracking-wide">{card.name}</div>
+                  <div className="mt-2 text-sm text-slate-200">{orientationLabel}｜{card.arcana}</div>
+                </div>
+                <div className="rounded-2xl bg-black/20 p-4 text-sm leading-7 text-slate-100">
+                  {meaning}
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="hidden"
+                initial={{ rotateY: -90, opacity: 0 }}
+                animate={{ rotateY: 0, opacity: 1 }}
+                exit={{ rotateY: 90, opacity: 0 }}
+                transition={{ duration: 0.45 }}
+                className="flex h-[240px] items-center justify-center rounded-3xl border border-dashed border-white/20 bg-gradient-to-br from-indigo-950 via-violet-900 to-slate-950 p-6 text-center"
+              >
+                <div>
+                  <Stars className="mx-auto mb-4 h-10 w-10 text-amber-200" />
+                  <div className="text-lg font-semibold">尚未翻牌</div>
+                  <div className="mt-2 text-sm text-slate-300">專注問題後，按下翻牌</div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
+export default function TarotWebApp() {
+  const [question, setQuestion] = useState("");
+  const [spread, setSpread] = useState("1");
+  const [cards, setCards] = useState([]);
+  const [revealed, setRevealed] = useState(false);
+  const [status, setStatus] = useState("準備好了，輸入問題後開始抽牌。");
+
+  const spreadCount = useMemo(() => Number(spread), [spread]);
+
+  const handleDraw = async () => {
+    setRevealed(false);
+    setCards([]);
+    setStatus("開始洗牌中…");
+    await new Promise((r) => setTimeout(r, 550));
+    setStatus("請專注你的問題…");
+    await new Promise((r) => setTimeout(r, 700));
+    setStatus("正在切牌…");
+    await new Promise((r) => setTimeout(r, 550));
+    setStatus(spreadCount === 1 ? "準備抽出 1 張牌…" : "準備抽出 3 張牌…");
+    await new Promise((r) => setTimeout(r, 650));
+    setCards(drawCards(spreadCount));
+    setStatus("牌已抽出，按下翻牌查看結果。");
+  };
+
+  const handleReveal = () => {
+    if (!cards.length) return;
+    setRevealed(true);
+    setStatus("牌面已展開，請慢慢感受它想告訴你的事。);
+  };
+
+  const handleReset = () => {
+    setQuestion("");
+    setSpread("1");
+    setCards([]);
+    setRevealed(false);
+    setStatus("已重置，可以開始新的占卜。");
+  };
+
+  return (
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(120,119,198,0.35),_transparent_35%),linear-gradient(180deg,_#140f2a_0%,_#1a1638_45%,_#0b1020_100%)] px-4 py-10 text-white">
+      <div className="mx-auto max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8 text-center"
+        >
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-slate-200 backdrop-blur">
+            <MoonStar className="h-4 w-4 text-amber-200" />
+            小白占星｜塔羅抽牌工具雛形
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">讓別人也能用的占卜工具</h1>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-300 md:text-lg">
+            可抽 1 張牌或 3 張牌，含正逆位與基礎牌義。這一版已經可以當成公開網頁的雛形。
+          </p>
+        </motion.div>
+
+        <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
+          <Card className="rounded-3xl border-white/10 bg-white/10 text-white shadow-2xl backdrop-blur">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Sparkles className="h-5 w-5 text-amber-200" />
+                抽牌設定
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <div className="mb-2 text-sm text-slate-200">你的問題</div>
+                <Textarea
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="請輸入你想問的問題…"
+                  className="min-h-[110px] rounded-2xl border-white/10 bg-black/20 text-white placeholder:text-slate-400"
+                />
+              </div>
+
+              <div>
+                <div className="mb-2 text-sm text-slate-200">牌陣</div>
+                <Select value={spread} onValueChange={setSpread}>
+                  <SelectTrigger className="rounded-2xl border-white/10 bg-black/20 text-white">
+                    <SelectValue placeholder="選擇牌陣" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">單張牌</SelectItem>
+                    <SelectItem value="3">三張牌（過去 / 現在 / 未來）</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                <Button onClick={handleDraw} className="rounded-2xl bg-amber-300 text-slate-950 hover:bg-amber-200">
+                  開始抽牌
+                </Button>
+                <Button onClick={handleReveal} variant="secondary" className="rounded-2xl bg-white/15 text-white hover:bg-white/20">
+                  翻牌
+                </Button>
+                <Button onClick={handleReset} variant="outline" className="rounded-2xl border-white/15 bg-transparent text-white hover:bg-white/10">
+                  <RotateCcw className="mr-2 h-4 w-4" />重置
+                </Button>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-black/20 p-4 text-sm leading-7 text-slate-300">
+                {status}
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="space-y-6">
+            <Card className="rounded-3xl border-white/10 bg-white/10 text-white shadow-2xl backdrop-blur">
+              <CardContent className="p-6">
+                <div className="text-sm text-slate-300">本次問題</div>
+                <div className="mt-2 text-lg leading-8 text-white">
+                  {question || "你目前還沒有輸入問題，也可以先單純抽牌感受當下狀態。"}
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className={`grid gap-5 ${spreadCount === 1 ? "md:grid-cols-1" : "md:grid-cols-3"}`}>
+              {Array.from({ length: spreadCount }).map((_, idx) => {
+                const card = cards[idx];
+                return card ? (
+                  <TarotCard
+                    key={`${card.name}-${idx}`}
+                    card={card}
+                    title={positionLabels[spreadCount][idx]}
+                    revealed={revealed}
+                  />
+                ) : (
+                  <TarotCard
+                    key={`placeholder-${idx}`}
+                    card={{ name: "", arcana: "", orientation: "upright" }}
+                    title={positionLabels[spreadCount][idx]}
+                    revealed={false}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
