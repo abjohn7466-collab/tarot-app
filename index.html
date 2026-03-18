@@ -1,156 +1,629 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<title>小白占星｜塔羅占卜</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小白占星｜塔羅占卜</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: radial-gradient(circle at top, #2a2250, #0f0c1a);
-  color: white;
-  text-align: center;
-  padding: 40px;
-}
+    body {
+      margin: 0;
+      font-family: Arial, "Noto Sans TC", sans-serif;
+      background: radial-gradient(circle at top, #2a2250, #0f0c1a);
+      color: white;
+      text-align: center;
+      padding: 36px 16px 60px;
+      min-height: 100vh;
+    }
 
-button {
-  padding: 10px 20px;
-  margin: 10px;
-  border-radius: 10px;
-  border: none;
-  background: gold;
-  cursor: pointer;
-}
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      letter-spacing: 2px;
+      color: #fff4d6;
+    }
 
-/* 卡片 */
-.tarot-card {
-  width: 220px;
-  height: 360px;
-  perspective: 1000px;
-  margin: 20px auto;
-  cursor: pointer;
-}
+    .subtitle {
+      color: #d2caea;
+      margin-bottom: 28px;
+      line-height: 1.8;
+      font-size: 15px;
+    }
 
-.tarot-inner {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-  position: relative;
-}
+    .panel {
+      max-width: 560px;
+      margin: 0 auto 28px;
+      padding: 22px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+    }
 
-.tarot-card.flip .tarot-inner {
-  transform: rotateY(180deg);
-}
+    textarea, select, button {
+      width: 100%;
+      border-radius: 14px;
+      border: none;
+      padding: 13px 14px;
+      font-size: 15px;
+      margin-top: 12px;
+    }
 
-.face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-  backface-visibility: hidden;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-}
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+      background: rgba(255,255,255,0.94);
+      color: #241d38;
+    }
 
-/* 卡背 */
-.back {
-  background: linear-gradient(135deg, #2c1f5a, #120c2e);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: gold;
-  font-size: 20px;
-}
+    select {
+      background: rgba(255,255,255,0.94);
+      color: #241d38;
+    }
 
-/* 正面 */
-.front {
-  transform: rotateY(180deg);
-  background: white;
-  color: black;
-  padding: 10px;
-}
+    button {
+      background: linear-gradient(135deg, #f4d06f, #ffb347);
+      color: #241d38;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
 
-.front img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-</style>
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.96;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status {
+      margin-top: 14px;
+      color: #d5cdeb;
+      min-height: 24px;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .question-box {
+      max-width: 920px;
+      margin: 0 auto 18px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #eee8ff;
+      line-height: 1.8;
+      display: none;
+    }
+
+    .cards-area {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 24px;
+      justify-content: center;
+    }
+
+    .cards-area.one {
+      grid-template-columns: repeat(1, minmax(240px, 260px));
+    }
+
+    .cards-area.three {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+    }
+
+    .card-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .position-label {
+      margin-bottom: 10px;
+      color: #f4d98c;
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
+
+    .tarot-card {
+      width: 240px;
+      height: 400px;
+      perspective: 1200px;
+    }
+
+    .tarot-inner {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s ease;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+
+    .tarot-card.flip .tarot-inner {
+      transform: rotateY(180deg);
+    }
+
+    .face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      backface-visibility: hidden;
+      overflow: hidden;
+      box-shadow: 0 14px 35px rgba(0,0,0,0.45);
+    }
+
+    .back {
+      background:
+        radial-gradient(circle at center, rgba(255,215,120,0.12) 0%, transparent 28%),
+        linear-gradient(135deg, #1f153f, #0d081f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .back-design {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      border: 2px solid rgba(255,215,120,0.75);
+      position: relative;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .back-design::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(255,215,120,0.45);
+      border-radius: 10px;
+    }
+
+    .back-design::after {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border: 1px solid rgba(255,215,120,0.28);
+      transform: rotate(45deg);
+    }
+
+    .back-center {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #f5d57a;
+    }
+
+    .back-sun {
+      font-size: 38px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .back-stars {
+      font-size: 13px;
+      letter-spacing: 6px;
+      margin-bottom: 10px;
+    }
+
+    .back-name {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: #fff0b8;
+    }
+
+    .front {
+      transform: rotateY(180deg);
+      background: #ffffff;
+      color: #111;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .front img {
+      width: 100%;
+      height: 285px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #241d38;
+    }
+
+    .card-orientation {
+      font-size: 15px;
+      color: #7a5b28;
+    }
+
+    .result-panel {
+      max-width: 920px;
+      margin: 30px auto 0;
+      padding: 22px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.28);
+      display: none;
+    }
+
+    .result-panel h2 {
+      margin-top: 0;
+      color: #ffe29e;
+      font-size: 24px;
+    }
+
+    .result-panel h3 {
+      color: #f4d98c;
+      margin-top: 24px;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .result-panel p {
+      line-height: 1.95;
+      color: #f2ecff;
+      margin: 0 0 14px;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: #d0c7e8;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 28px;
+      }
+
+      .tarot-card {
+        width: 210px;
+        height: 360px;
+      }
+
+      .front img {
+        height: 245px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<h1>🔮 小白占星</h1>
+  <h1>🔮 小白占星</h1>
+  <div class="subtitle">
+    抽牌之前，先把心安靜一下。<br>
+    有些答案不是立刻出現，而是在翻牌的那一刻，被你自己看見。
+  </div>
 
-<button onclick="draw()">抽牌</button>
+  <div class="panel">
+    <textarea id="question" placeholder="輸入你的問題，例如：這段感情還有機會嗎？"></textarea>
 
-<div id="result"></div>
+    <select id="theme">
+      <option value="general">一般指引</option>
+      <option value="love">愛情</option>
+      <option value="work">工作</option>
+    </select>
 
-<script>
+    <select id="spread">
+      <option value="1">單張占卜</option>
+      <option value="3">三張占卜（現況 / 建議 / 結果）</option>
+    </select>
 
-// ===== 卡牌 =====
-const cards = [
-"愚者","魔術師","女祭司","皇后","皇帝","教皇","戀人","戰車",
-"力量","隱者","命運之輪","正義","吊人","死神","節制","惡魔",
-"高塔","星星","月亮","太陽","審判","世界"
-];
+    <button id="drawBtn" onclick="prepareDraw()">開始抽牌</button>
+    <button id="flipBtn" onclick="flipCards()" disabled>翻牌</button>
 
-// ===== 圖片 =====
-const tarotImages = {
-"愚者":"https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
-"魔術師":"https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
-"女祭司":"https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
-"皇后":"https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
-"皇帝":"https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
-"教皇":"https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg",
-"戀人":"https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg",
-"戰車":"https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg",
-"力量":"https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg",
-"隱者":"https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg",
-"命運之輪":"https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
-"正義":"https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg",
-"吊人":"https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg",
-"死神":"https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg",
-"節制":"https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg",
-"惡魔":"https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg",
-"高塔":"https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg",
-"星星":"https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg",
-"月亮":"https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg",
-"太陽":"https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg",
-"審判":"https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg",
-"世界":"https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg"
-};
+    <div class="status" id="status">先輸入問題，再開始抽牌。</div>
+  </div>
 
-// ===== 抽牌 =====
-function draw() {
+  <div class="question-box" id="questionBox"></div>
 
-  const result = document.getElementById("result");
-  result.innerHTML = "";
+  <div id="cardsArea" class="cards-area one"></div>
 
-  const card = cards[Math.floor(Math.random()*cards.length)];
-  const reverse = Math.random() < 0.5 ? "正位" : "逆位";
-
-  result.innerHTML = `
-    <div class="tarot-card" onclick="this.classList.toggle('flip')">
-      <div class="tarot-inner">
-
-        <div class="face back">
-          ✨ 小白占星 ✨
-        </div>
-
-        <div class="face front">
-          <img src="${tarotImages[card]}">
-          <h3>${card}（${reverse}）</h3>
-        </div>
-
-      </div>
+  <div class="result-panel" id="resultPanel">
+    <h2>✨ 小白整體解讀</h2>
+    <div id="detailResult"></div>
+    <div class="footer-note">
+      👉 真正關鍵的，往往不是外在發生什麼，而是你怎麼面對自己現在的狀態。
     </div>
-  `;
-}
-</script>
+  </div>
 
+  <script>
+    const cards = [
+      "愚者","魔術師","女祭司","皇后","皇帝","教皇","戀人","戰車",
+      "力量","隱者","命運之輪","正義","吊人","死神","節制","惡魔",
+      "高塔","星星","月亮","太陽","審判","世界"
+    ];
+
+    const tarotImages = {
+      "愚者":"https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
+      "魔術師":"https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
+      "女祭司":"https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
+      "皇后":"https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
+      "皇帝":"https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
+      "教皇":"https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg",
+      "戀人":"https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg",
+      "戰車":"https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg",
+      "力量":"https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg",
+      "隱者":"https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg",
+      "命運之輪":"https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
+      "正義":"https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg",
+      "吊人":"https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg",
+      "死神":"https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg",
+      "節制":"https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg",
+      "惡魔":"https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg",
+      "高塔":"https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg",
+      "星星":"https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg",
+      "月亮":"https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg",
+      "太陽":"https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg",
+      "審判":"https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg",
+      "世界":"https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg"
+    };
+
+    const meanings = {
+      general: {
+        "愚者": { upright: "你其實可以開始了，不用等完全準備好。", reversed: "你可能太隨便，或還沒想清楚後果。" },
+        "魔術師": { upright: "你是有能力的，現在差的是行動。", reversed: "你在懷疑自己，或沒有把力量用在對的地方。" },
+        "女祭司": { upright: "你其實早就知道答案，只是還沒有承認。", reversed: "你在逃避你的直覺。" },
+        "皇后": { upright: "事情會慢慢變好，但需要時間與照顧。", reversed: "你忽略了自己的感受。" },
+        "皇帝": { upright: "現在需要穩住，建立規則與結構。", reversed: "你太想控制，反而失衡。" },
+        "教皇": { upright: "照著既有方法走，會比較安全。", reversed: "你已經不想照規則活了。" },
+        "戀人": { upright: "這是一個需要誠實面對的選擇。", reversed: "你內心還沒準備好選擇。" },
+        "戰車": { upright: "現在可以前進，只要方向夠清楚。", reversed: "你方向不穩，容易失控。" },
+        "力量": { upright: "你其實很穩，只是你還沒發現。", reversed: "你開始懷疑自己。" },
+        "隱者": { upright: "你需要時間沉澱與思考。", reversed: "你已經想太久了。" },
+        "命運之輪": { upright: "局勢正在轉變，而且對你有利。", reversed: "時機還沒到。" },
+        "正義": { upright: "事情會回到公平。", reversed: "有人沒有誠實面對。" },
+        "吊人": { upright: "現在需要暫停，換個角度看。", reversed: "你卡太久了。" },
+        "死神": { upright: "該結束了，新的才會開始。", reversed: "你在拖著不放。" },
+        "節制": { upright: "慢慢來，反而是最好的方式。", reversed: "你的節奏亂掉了。" },
+        "惡魔": { upright: "你被某個狀態綁住了。", reversed: "你開始清醒了。" },
+        "高塔": { upright: "事情會突然改變，但那未必是壞事。", reversed: "問題其實早就存在。" },
+        "星星": { upright: "還有希望，而且會慢慢好。", reversed: "你現在有點沒信心。" },
+        "月亮": { upright: "事情還不清楚，先別太早下結論。", reversed: "你開始看懂了。" },
+        "太陽": { upright: "會成功，而且很明顯。", reversed: "其實不差，只是還差最後一步。" },
+        "審判": { upright: "你要做決定了。", reversed: "你在逃避那個真正該做的決定。" },
+        "世界": { upright: "事情會完成，進入新的階段。", reversed: "還沒結束，還差最後收尾。" }
+      },
+      love: {
+        "愚者": { upright: "感情上有新的可能，可以試著靠近看看。", reversed: "你可能太快投入，或還沒看清對方。" },
+        "魔術師": { upright: "你其實有能力推動這段關係。", reversed: "你們之間有人在隱藏真心，或表達不夠真實。" },
+        "女祭司": { upright: "這段關係有很多沒說出口的感受。", reversed: "你明明有感覺，卻一直不願承認。" },
+        "皇后": { upright: "這段感情有滋養與成長的空間。", reversed: "你在愛裡太顧對方，忘了自己。" },
+        "皇帝": { upright: "這段關係需要穩定與明確界線。", reversed: "有人太強勢，讓感情失去平衡。" },
+        "教皇": { upright: "這段感情適合走穩定、正式的方向。", reversed: "你們對關係的期待不完全一致。" },
+        "戀人": { upright: "這是很強的感情連結，也是一個重要選擇。", reversed: "彼此有吸引，但關係還沒對齊。" },
+        "戰車": { upright: "只要雙方方向一致，感情可以推進。", reversed: "一方太急，另一方跟不上。" },
+        "力量": { upright: "這段關係需要溫柔與耐心，不是硬逼結果。", reversed: "你可能因為不安而想抓得太緊。" },
+        "隱者": { upright: "感情上你需要先看清自己的心。", reversed: "你躲得太久了，反而讓關係停住。" },
+        "命運之輪": { upright: "感情正在迎來轉機。", reversed: "現在還在反覆拉扯中。" },
+        "正義": { upright: "這段關係需要誠實與公平。", reversed: "有人沒有坦白，或心裡其實不平衡。" },
+        "吊人": { upright: "這段關係暫時不適合硬推。", reversed: "你等太久了，也許該重新想想。" },
+        "死神": { upright: "舊的相處模式該結束了，關係才可能重生。", reversed: "你還抓著一段其實已經變質的感情。" },
+        "節制": { upright: "感情需要慢慢磨合，找到舒服節奏。", reversed: "你們的步調差太多了。" },
+        "惡魔": { upright: "這段關係有強烈吸引，但也可能帶著依賴或執著。", reversed: "你開始看見這段感情真正困住你的地方。" },
+        "高塔": { upright: "感情裡可能有突發變化或真相揭露。", reversed: "你們其實早就知道問題，只是一直沒處理。" },
+        "星星": { upright: "這段感情還有希望。", reversed: "你現在對愛有點失望。" },
+        "月亮": { upright: "對方或這段關係還有很多模糊地帶。", reversed: "有些真相正慢慢浮出來。" },
+        "太陽": { upright: "感情有機會明朗而且順利發展。", reversed: "其實不差，只是還沒完全走到光裡。" },
+        "審判": { upright: "你要對這段關係做出真正的決定了。", reversed: "你明明知道該怎麼做，卻還在拖。" },
+        "世界": { upright: "這段關係有機會走向成熟完整。", reversed: "關係還沒真正走到一個定案。" }
+      },
+      work: {
+        "愚者": { upright: "工作上有新的機會，可以開始試試看。", reversed: "你可能太衝動，還沒看清風險。" },
+        "魔術師": { upright: "你其實很有能力，現在差的是把它拿出來。", reversed: "你有能力，但沒有被用在最適合的位置。" },
+        "女祭司": { upright: "職場上先觀察，比急著動作更重要。", reversed: "你其實已經感覺到不對，卻不想面對。" },
+        "皇后": { upright: "工作會慢慢穩定成長。", reversed: "你一直在付出，卻忽略自己的消耗。" },
+        "皇帝": { upright: "現在要靠結構、紀律與掌控力。", reversed: "工作環境太強勢，或你被壓得很緊。" },
+        "教皇": { upright: "照制度走，先求穩會比較有利。", reversed: "你已經受不了原本那套規則。" },
+        "戀人": { upright: "你面臨一個重要的職涯選擇。", reversed: "你對工作方向還很猶豫。" },
+        "戰車": { upright: "現在是可以往前衝的時候。", reversed: "你有動力，但方向還不夠穩。" },
+        "力量": { upright: "你其實撐得住，而且比自己想像的更穩。", reversed: "最近的壓力讓你開始不相信自己。" },
+        "隱者": { upright: "工作上先沉澱，別急著做大決定。", reversed: "你悶太久了，該開始動了。" },
+        "命運之輪": { upright: "工作運勢正在轉，可能出現新機會。", reversed: "現在還在卡關期。" },
+        "正義": { upright: "工作上需要理性、公平與清楚判斷。", reversed: "現在的職場環境可能並不公平。" },
+        "吊人": { upright: "眼前不是衝的時候，先調整角度。", reversed: "你卡太久，該找出口了。" },
+        "死神": { upright: "舊工作模式或舊階段該結束了。", reversed: "你明明知道不適合，卻還在拖。" },
+        "節制": { upright: "工作上最重要的是調整節奏與平衡。", reversed: "你現在的工作步調已經失衡。" },
+        "惡魔": { upright: "你可能被壓力、金錢或環境綁住。", reversed: "你開始意識到自己不能再這樣下去。" },
+        "高塔": { upright: "工作上可能有突發變動。", reversed: "問題其實累積很久了。" },
+        "星星": { upright: "工作上還有希望，而且有機會慢慢改善。", reversed: "你現在對工作有點失去信心。" },
+        "月亮": { upright: "工作局勢還不夠清楚。", reversed: "你開始看懂真正的問題了。" },
+        "太陽": { upright: "工作結果有機會很亮眼。", reversed: "其實有進展，只是還沒完全顯現。" },
+        "審判": { upright: "你到了該做職涯決定的時刻。", reversed: "你在逃避那個應該要面對的選擇。" },
+        "世界": { upright: "工作階段有機會完成，進入下一個層次。", reversed: "事情快完成了，但還差最後整理。" }
+      }
+    };
+
+    let currentDraw = [];
+    let currentSpread = 1;
+    let currentTheme = "general";
+    let hasFlipped = false;
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function getUniqueDraw(count) {
+      const shuffled = shuffle(cards);
+      return shuffled.slice(0, count).map(card => {
+        const orientation = Math.random() < 0.5 ? "正位" : "逆位";
+        const meaning = meanings[currentTheme][card][orientation === "正位" ? "upright" : "reversed"];
+        return { card, orientation, meaning };
+      });
+    }
+
+    function prepareDraw() {
+      const question = document.getElementById("question").value.trim();
+      const questionBox = document.getElementById("questionBox");
+      const cardsArea = document.getElementById("cardsArea");
+      const resultPanel = document.getElementById("resultPanel");
+      const status = document.getElementById("status");
+      const flipBtn = document.getElementById("flipBtn");
+
+      currentTheme = document.getElementById("theme").value;
+      currentSpread = parseInt(document.getElementById("spread").value, 10);
+      currentDraw = getUniqueDraw(currentSpread);
+      hasFlipped = false;
+
+      cardsArea.innerHTML = "";
+      resultPanel.style.display = "none";
+      cardsArea.className = currentSpread === 1 ? "cards-area one" : "cards-area three";
+
+      if (question) {
+        questionBox.style.display = "block";
+        questionBox.innerHTML = `你的問題：${question}`;
+      } else {
+        questionBox.style.display = "block";
+        questionBox.innerHTML = "你這次沒有輸入問題，也可以把它當成一個當下能量提醒。";
+      }
+
+      const positions = currentSpread === 3
+        ? ["現況", "建議", "結果"]
+        : ["你的牌"];
+
+      currentDraw.forEach((item, index) => {
+        const slot = document.createElement("div");
+        slot.className = "card-slot";
+        slot.innerHTML = `
+          <div class="position-label">${positions[index]}</div>
+          <div class="tarot-card" id="card-${index}">
+            <div class="tarot-inner">
+              <div class="face back">
+                <div class="back-design">
+                  <div class="back-center">
+                    <div class="back-sun">☀</div>
+                    <div class="back-stars">✦ ✧ ✦</div>
+                    <div class="back-name">TAROT</div>
+                  </div>
+                </div>
+              </div>
+              <div class="face front">
+                <img src="${tarotImages[item.card]}" alt="${item.card}">
+                <div class="card-title">${item.card}</div>
+                <div class="card-orientation">${item.orientation}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        cardsArea.appendChild(slot);
+      });
+
+      flipBtn.disabled = false;
+      status.innerHTML = currentSpread === 1
+        ? "牌已經抽好了，按下翻牌查看結果。"
+        : "三張牌已經抽好，按下翻牌，它會一張一張打開。";
+    }
+
+    function flipCards() {
+      if (!currentDraw.length || hasFlipped) return;
+
+      const status = document.getElementById("status");
+      const resultPanel = document.getElementById("resultPanel");
+      const detailResult = document.getElementById("detailResult");
+
+      currentDraw.forEach((_, index) => {
+        setTimeout(() => {
+          const cardEl = document.getElementById(`card-${index}`);
+          if (cardEl) {
+            cardEl.classList.add("flip");
+          }
+        }, index * 280);
+      });
+
+      hasFlipped = true;
+      status.innerHTML = "牌面已展開，請慢慢感受它想對你說的話。";
+
+      setTimeout(() => {
+        detailResult.innerHTML = buildReading();
+        resultPanel.style.display = "block";
+        resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, currentDraw.length * 280 + 700);
+    }
+
+    function themeLabel() {
+      if (currentTheme === "love") return "愛情";
+      if (currentTheme === "work") return "工作";
+      return "一般";
+    }
+
+    function buildReading() {
+      const question = document.getElementById("question").value.trim();
+
+      if (currentSpread === 1) {
+        const item = currentDraw[0];
+        return `
+          <h3>${themeLabel()}主題｜${item.card}（${item.orientation}）</h3>
+          <p>${item.meaning}</p>
+          <p>${
+            question
+              ? `如果回到你剛剛問的「${question}」，這張牌比較像是在提醒你：不要只看表面，而是要看清自己現在真正站在哪裡。`
+              : "這張牌比較像是一個當下提醒：你現在需要更誠實地看見自己的內在狀態。"
+          }</p>
+        `;
+      }
+
+      const [present, advice, result] = currentDraw;
+
+      return `
+        <h3>現況｜${present.card}（${present.orientation}）</h3>
+        <p>${present.meaning}</p>
+
+        <h3>建議｜${advice.card}（${advice.orientation}）</h3>
+        <p>${advice.meaning}</p>
+
+        <h3>結果｜${result.card}（${result.orientation}）</h3>
+        <p>${result.meaning}</p>
+
+        <h3>整體來看</h3>
+        <p>
+          你這次選的是${themeLabel()}主題，所以這組牌不是在抽象地談人生，
+          而是比較直接地回到你目前最在意的領域。
+        </p>
+        <p>
+          現況這張牌在說明你眼前真正的狀態；
+          建議這張牌指出你接下來比較適合採取的態度；
+          至於結果這張牌，則是在告訴你，如果你照這樣走下去，事情大致會往哪個方向發展。
+        </p>
+        <p>
+          ${present.card} 讓你看到現在的核心問題，
+          ${advice.card} 是這組牌最值得你聽進去的地方，
+          而 ${result.card} 並不是死答案，而是一個趨勢提醒。
+        </p>
+        ${
+          question
+            ? `<p>如果回到你一開始問的「${question}」，這組牌比較像在告訴你：答案不是單純的是或不是，而是你必須先看清自己現在的狀態，才知道下一步怎麼走最適合。</p>`
+            : ""
+        }
+      `;
+    }
+  </script>
 </body>
 </html>
