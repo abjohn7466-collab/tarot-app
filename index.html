@@ -1,60 +1,39 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>小白占星｜塔羅占卜</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#d9c8b4">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="小白陪伴">
-  <link rel="apple-touch-icon" href="icon-192.png">
+
   <style>
     * {
       box-sizing: border-box;
     }
-  <script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js")
-        .then(() => console.log("Service Worker 已註冊"))
-        .catch((error) => console.log("Service Worker 註冊失敗:", error));
-    });
-  }
-  </script>
+
     body {
-  margin: 0;
-  font-family: "Noto Sans TC", sans-serif;
+      margin: 0;
+      font-family: Arial, "Noto Sans TC", sans-serif;
+      background: #f4efe8;
+      color: #4a3f35;
+      min-height: 100vh;
+      padding: 30px 16px 50px;
+    }
 
-  background: radial-gradient(circle at top, #1a1a2e, #0f0f1a 70%);
-  color: #f5f5f5;
-
-  min-height: 100vh;
-  }
-    body::before {
-  content: "";
-  position: fixed;
-  width: 100%;
-  height: 100%;
-
-  background-image: 
-    radial-gradient(2px 2px at 20% 30%, #ffffff33, transparent),
-    radial-gradient(2px 2px at 70% 60%, #ffffff22, transparent),
-    radial-gradient(1px 1px at 40% 80%, #ffffff55, transparent);
-
-  z-index: -1;
-}
+    .wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: 32px;
-      letter-spacing: 2px;
-      color: #fff4d6;
+      text-align: center;
+      margin: 0 0 10px;
+      font-size: 34px;
+      color: #8c6b4f;
     }
 
     .subtitle {
-      color: #d2caea;
+      text-align: center;
+      color: #8f8175;
       margin-bottom: 28px;
       line-height: 1.8;
       font-size: 15px;
@@ -62,72 +41,72 @@
 
     .panel {
       max-width: 560px;
-      margin: 0 auto 28px;
+      margin: 0 auto 24px;
+      background: #ffffff;
+      border-radius: 18px;
       padding: 22px;
-      border-radius: 24px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
 
-    textarea, select, button {
+    textarea,
+    select,
+    button {
       width: 100%;
-      border-radius: 14px;
-      border: none;
-      padding: 13px 14px;
-      font-size: 15px;
+      font-size: 16px;
+      border-radius: 12px;
+      padding: 12px 14px;
       margin-top: 12px;
+      box-sizing: border-box;
     }
 
     textarea {
       min-height: 90px;
       resize: vertical;
-      background: rgba(255,255,255,0.94);
-      color: #241d38;
+      border: 1px solid #d8cfc5;
+      background: #fffdfa;
+      color: #4a3f35;
     }
 
     select {
-      background: rgba(255,255,255,0.94);
-      color: #241d38;
+      border: 1px solid #d8cfc5;
+      background: #fffdfa;
+      color: #4a3f35;
     }
 
     button {
-      background: linear-gradient(135deg, #f4d06f, #ffb347);
-      color: #241d38;
+      border: none;
+      background: #e8b564;
+      color: #fff;
       font-weight: bold;
       cursor: pointer;
-      transition: transform 0.25s ease, opacity 0.25s ease;
     }
 
     button:hover {
-      transform: translateY(-2px);
-      opacity: 0.96;
+      background: #d9a24c;
     }
 
     button:disabled {
-      opacity: 0.5;
+      background: #d8cfc5;
       cursor: not-allowed;
-      transform: none;
     }
 
     .status {
       margin-top: 14px;
-      color: #d5cdeb;
-      min-height: 24px;
+      color: #9b8f83;
       line-height: 1.7;
       font-size: 14px;
+      min-height: 24px;
     }
 
     .question-box {
       max-width: 920px;
-      margin: 0 auto 18px;
+      margin: 0 auto 20px;
+      background: #fffaf5;
+      border: 1px solid #eadfce;
+      border-radius: 14px;
       padding: 16px 18px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #eee8ff;
       line-height: 1.8;
+      color: #6d5f53;
       display: none;
     }
 
@@ -155,9 +134,9 @@
 
     .position-label {
       margin-bottom: 10px;
-      color: #f4d98c;
+      color: #b2875a;
       font-size: 15px;
-      letter-spacing: 1px;
+      font-weight: bold;
     }
 
     .tarot-card {
@@ -185,13 +164,11 @@
       border-radius: 18px;
       backface-visibility: hidden;
       overflow: hidden;
-      box-shadow: 0 14px 35px rgba(0,0,0,0.45);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.16);
     }
 
     .back {
-      background:
-        radial-gradient(circle at center, rgba(255,215,120,0.12) 0%, transparent 28%),
-        linear-gradient(135deg, #1f153f, #0d081f);
+      background: linear-gradient(135deg, #8e735b, #b99874);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -202,20 +179,20 @@
       width: 100%;
       height: 100%;
       border-radius: 14px;
-      border: 2px solid rgba(255,215,120,0.75);
+      border: 2px solid rgba(255,255,255,0.45);
       position: relative;
-      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      background: rgba(255,255,255,0.08);
     }
 
     .back-design::before {
       content: "";
       position: absolute;
       inset: 12px;
-      border: 1px solid rgba(255,215,120,0.45);
+      border: 1px solid rgba(255,255,255,0.35);
       border-radius: 10px;
     }
 
@@ -224,7 +201,7 @@
       position: absolute;
       width: 130px;
       height: 130px;
-      border: 1px solid rgba(255,215,120,0.28);
+      border: 1px solid rgba(255,255,255,0.25);
       transform: rotate(45deg);
     }
 
@@ -232,11 +209,11 @@
       position: relative;
       z-index: 2;
       text-align: center;
-      color: #f5d57a;
+      color: #fff8ef;
     }
 
     .back-sun {
-      font-size: 38px;
+      font-size: 36px;
       line-height: 1;
       margin-bottom: 10px;
     }
@@ -250,7 +227,6 @@
     .back-name {
       font-size: 12px;
       letter-spacing: 4px;
-      color: #fff0b8;
     }
 
     .front {
@@ -276,34 +252,33 @@
       font-size: 22px;
       font-weight: bold;
       margin-bottom: 6px;
-      color: #241d38;
+      color: #5c4836;
     }
 
     .card-orientation {
       font-size: 15px;
-      color: #7a5b28;
+      color: #9a7b57;
     }
 
     .result-panel {
       max-width: 920px;
       margin: 30px auto 0;
+      background: #ffffff;
+      border-radius: 18px;
       padding: 22px;
-      border-radius: 24px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
       text-align: left;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.28);
       display: none;
     }
 
     .result-panel h2 {
       margin-top: 0;
-      color: #ffe29e;
+      color: #8c6b4f;
       font-size: 24px;
     }
 
     .result-panel h3 {
-      color: #f4d98c;
+      color: #b2875a;
       margin-top: 24px;
       margin-bottom: 10px;
       font-size: 18px;
@@ -311,13 +286,13 @@
 
     .result-panel p {
       line-height: 1.95;
-      color: #f2ecff;
+      color: #5f5247;
       margin: 0 0 14px;
     }
 
     .footer-note {
       margin-top: 16px;
-      color: #d0c7e8;
+      color: #8f8175;
       font-size: 14px;
     }
 
@@ -339,41 +314,43 @@
 </head>
 <body>
 
-  <h1>🔮 小白占星</h1>
-  <div class="subtitle">
-    抽牌之前，先把心安靜一下。<br>
-    有些答案不是立刻出現，而是在翻牌的那一刻，被你自己看見。
-  </div>
+  <div class="wrapper">
+    <h1>🔮 小白占星</h1>
+    <div class="subtitle">
+      給現在有點亂、有點累、想安靜一下的你。<br>
+      這裡不是替你決定答案，而是陪你慢慢看清自己。
+    </div>
 
-  <div class="panel">
-    <textarea id="question" placeholder="輸入你的問題，例如：這段感情還有機會嗎？"></textarea>
+    <div class="panel">
+      <textarea id="question" placeholder="輸入你的問題，例如：這段感情還有機會嗎？"></textarea>
 
-    <select id="theme">
-      <option value="general">一般指引</option>
-      <option value="love">愛情</option>
-      <option value="work">工作</option>
-    </select>
+      <select id="theme">
+        <option value="general">一般指引</option>
+        <option value="love">愛情</option>
+        <option value="work">工作</option>
+      </select>
 
-    <select id="spread">
-      <option value="1">單張占卜</option>
-      <option value="3">三張占卜（現況 / 建議 / 結果）</option>
-    </select>
+      <select id="spread">
+        <option value="1">單張占卜</option>
+        <option value="3">三張占卜（現況 / 建議 / 結果）</option>
+      </select>
 
-    <button id="drawBtn" onclick="prepareDraw()">開始抽牌</button>
-    <button id="flipBtn" onclick="flipCards()" disabled>翻牌</button>
+      <button id="drawBtn" onclick="prepareDraw()">開始抽牌</button>
+      <button id="flipBtn" onclick="flipCards()" disabled>翻牌</button>
 
-    <div class="status" id="status">先輸入問題，再開始抽牌。</div>
-  </div>
+      <div class="status" id="status">先輸入問題，再開始抽牌。</div>
+    </div>
 
-  <div class="question-box" id="questionBox"></div>
+    <div class="question-box" id="questionBox"></div>
 
-  <div id="cardsArea" class="cards-area one"></div>
+    <div id="cardsArea" class="cards-area one"></div>
 
-  <div class="result-panel" id="resultPanel">
-    <h2>✨ 小白整體解讀</h2>
-    <div id="detailResult"></div>
-    <div class="footer-note">
-      👉 真正關鍵的，往往不是外在發生什麼，而是你怎麼面對自己現在的狀態。
+    <div class="result-panel" id="resultPanel">
+      <h2>✨ 小白整體解讀</h2>
+      <div id="detailResult"></div>
+      <div class="footer-note">
+        👉 真正重要的，往往不是外在發生什麼，而是你怎麼面對自己現在的狀態。
+      </div>
     </div>
   </div>
 
