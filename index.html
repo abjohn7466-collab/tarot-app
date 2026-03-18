@@ -4,11 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>小白占星｜塔羅占卜</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#d9c8b4">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="小白陪伴">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <style>
     * {
       box-sizing: border-box;
     }
-
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js")
+        .then(() => console.log("Service Worker 已註冊"))
+        .catch((error) => console.log("Service Worker 註冊失敗:", error));
+    });
+  }
+  </script>
     body {
       margin: 0;
       font-family: Arial, "Noto Sans TC", sans-serif;
