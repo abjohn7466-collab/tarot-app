@@ -326,25 +326,38 @@
     }
   .moon-box {
   max-width: 520px;
-  margin: 0 auto 28px;
+  margin: 0 auto 32px;
   background: #fffaf4;
   border: 1px solid #eadfce;
-  border-radius: 16px;
-  padding: 18px 20px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  border-radius: 18px;
+  padding: 22px 22px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
   text-align: center;
+  transition: all 0.3s ease;
 }
+.moon-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.08);
 
 .moon-title {
-  font-size: 20px;
+  font-size: 14px;
   letter-spacing: 2px;
   color: #b08a64;
+  margin-bottom: 6px;
+}
+.moon-sub {
+  font-size: 13px;
+  color: #a39586;
   margin-bottom: 10px;
 }
-
+  
+<div class="moon-sub">
+  也許你現在需要的，只是一點點被理解。
+</div>
+  
 .moon-content {
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: 16px;
+  line-height: 1.9;
   color: #5f5247;
 }
   </style>
