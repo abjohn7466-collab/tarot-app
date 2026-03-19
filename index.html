@@ -329,11 +329,20 @@
 <body>
 
   <div class="wrapper">
+  <audio id="bgm" loop>
+  <source src="bgm.mp3" type="audio/mpeg">
+  你的瀏覽器不支援音樂播放。
+  </audio>
     <h1>🔮 歡迎來到小白占星</h1>
     <div class="subtitle">
   這是一個陪伴型網站，<br>
   希望我們的陪伴能夠帶給你些許的安慰。<br><br>
   🌙 <span id="moonText"></span>
+</div>
+<div style="text-align:center; margin-bottom: 24px;">
+  <button id="musicBtn" onclick="toggleMusic()" style="max-width: 220px;">
+    🎵 播放背景音樂
+  </button>
 </div>
 
     <div class="panel">
@@ -839,7 +848,19 @@ function getMoonMessage() {
 }
 document.getElementById("moonText").innerText = getMoonMessage();
 
-  </script>
+function toggleMusic() {
+  const bgm = document.getElementById("bgm");
+  const musicBtn = document.getElementById("musicBtn");
+
+  if (bgm.paused) {
+    bgm.play();
+    musicBtn.textContent = "⏸ 暫停背景音樂";
+  } else {
+    bgm.pause();
+    musicBtn.textContent = "🎵 播放背景音樂";
+  }
+}
+</script>
   
 </body>
 </html>
