@@ -331,9 +331,10 @@
   <div class="wrapper">
     <h1>🔮 歡迎來到小白占星</h1>
     <div class="subtitle">
-      給現在有點亂、有點累、想安靜一下的你。<br>
-      這裡不是替你決定答案，而是陪你慢慢找到自己。
-    </div>
+  給現在有點亂、有點累、想安靜一下的你。<br>
+  這裡不是替你決定答案，而是陪你慢慢找到自己。<br><br>
+  🌙 <span id="moonText"></span>
+</div>
 
     <div class="panel">
       <textarea id="question" placeholder="輸入你的問題，例如：這段感情我該如何修復？"></textarea>
@@ -815,5 +816,27 @@
       `;
     }
   </script>
+  const moonMessages = [
+  "你不需要一直撐著，慢一點也沒關係，現在先照顧好自己就好。", // 牡羊
+  "有些不安只是過程，你其實正在慢慢變穩。", // 金牛
+  "想太多的時候，記得回到當下，事情沒有你想得那麼複雜。", // 雙子
+  "你的感受很重要，不需要一直壓著自己。", // 巨蟹
+  "你可以閃耀，但不需要證明什麼才值得被愛。", // 獅子
+  "慢慢來就好，你已經做得比自己想像中更多了。", // 處女
+  "關係不需要完美，只需要真實與舒服。", // 天秤
+  "有些情緒不是問題，而是提醒你需要被看見。", // 天蠍
+  "你可以不確定，但仍然可以繼續往前走。", // 射手
+  "你不需要一直堅強，偶爾放鬆也沒關係。", // 摩羯
+  "做自己就好，不需要為了誰改變本質。", // 水瓶
+  "你的溫柔不是脆弱，而是一種力量。" // 雙魚
+];
+
+function getMoonMessage() {
+  const now = Date.now();
+  const hours60 = 1000 * 60 * 60 * 60;
+  const index = Math.floor(now / hours60) % 12;
+  return moonMessages[index];
+}
+  document.getElementById("moonText").innerText = getMoonMessage();
 </body>
 </html>
