@@ -310,7 +310,8 @@
     }
 
     .result-panel,
-    .history-panel {
+    .history-panel,
+    .journal-panel {
       max-width: 920px;
       margin: 30px auto 0;
       background: #ffffff;
@@ -325,14 +326,16 @@
     }
 
     .result-panel h2,
-    .history-panel h2 {
+    .history-panel h2,
+    .journal-panel h2 {
       margin-top: 0;
       color: #8c6b4f;
       font-size: 24px;
     }
 
     .result-panel h3,
-    .history-panel h3 {
+    .history-panel h3,
+    .journal-panel h3 {
       color: #b2875a;
       margin-top: 24px;
       margin-bottom: 10px;
@@ -340,7 +343,8 @@
     }
 
     .result-panel p,
-    .history-panel p {
+    .history-panel p,
+    .journal-panel p {
       line-height: 1.95;
       color: #5f5247;
       margin: 0 0 14px;
@@ -352,7 +356,8 @@
       font-size: 14px;
     }
 
-    .history-header {
+    .history-header,
+    .journal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -367,20 +372,23 @@
       font-size: 14px;
     }
 
-    .history-list {
+    .history-list,
+    .journal-list {
       margin-top: 18px;
       display: grid;
       gap: 14px;
     }
 
-    .history-item {
+    .history-item,
+    .journal-item {
       background: #fffaf4;
       border: 1px solid #eadfce;
       border-radius: 14px;
       padding: 16px;
     }
 
-    .history-meta {
+    .history-meta,
+    .journal-meta {
       font-size: 13px;
       color: #9a8c7f;
       margin-bottom: 10px;
@@ -399,17 +407,38 @@
       margin-bottom: 8px;
     }
 
-    .history-reading {
+    .history-reading,
+    .journal-content {
       color: #6d5f53;
       line-height: 1.9;
       font-size: 14px;
       white-space: pre-wrap;
     }
 
-    .empty-history {
+    .empty-history,
+    .empty-journal {
       color: #9b8f83;
       text-align: center;
       padding: 14px 0 4px;
+    }
+
+    .journal-helper {
+      color: #8f8175;
+      line-height: 1.9;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .journal-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .journal-actions button {
+      width: auto;
+      min-width: 140px;
     }
 
     @media (max-width: 768px) {
@@ -494,6 +523,26 @@
       </div>
     </div>
 
+    <div class="journal-panel">
+      <div class="journal-header">
+        <h2>🫶 寫給此刻的自己</h2>
+        <button class="small-btn" onclick="clearAllJournals()">清空所有日誌</button>
+      </div>
+
+      <div class="journal-helper">
+        抽完牌後你有沒有想對自己說些什麼呢？<br>
+        不需要很完整，也不需要很漂亮，只要把此刻的感受留下來就好。
+      </div>
+
+      <textarea id="journalInput" placeholder="例如：我其實知道自己很累，只是一直不敢承認。"></textarea>
+
+      <div class="journal-actions">
+        <button onclick="saveJournal()">儲存這段話</button>
+      </div>
+
+      <div id="journalList" class="journal-list"></div>
+    </div>
+
     <div class="history-panel">
       <div class="history-header">
         <h2>🕯 我的抽牌紀錄</h2>
@@ -505,6 +554,7 @@
 
   <script>
     const STORAGE_KEY = "xiaobai_tarot_history_v1";
+    const JOURNAL_KEY = "xiaobai_tarot_journal_v1";
 
     const majorCards = [
       "愚者","魔術師","女祭司","皇后","皇帝","教皇","戀人","戰車",
@@ -864,6 +914,61 @@
       `).join("");
     }
 
+    function saveJournal() {
+      const journalInput = document.getElementById("journalInput");
+      const content = journalInput.value.trim();
+
+      if (!content) {
+        alert("請先寫下一點此刻的感受，再儲存喔。");
+        return;
+      }
+
+      const oldData = JSON.parse(localStorage.getItem(JOURNAL_KEY) || "[]");
+      oldData.unshift({
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+        content
+      });
+
+      localStorage.setItem(JOURNAL_KEY, JSON.stringify(oldData));
+      journalInput.value = "";
+      renderJournals();
+    }
+
+    function deleteJournal(id) {
+      const oldData = JSON.parse(localStorage.getItem(JOURNAL_KEY) || "[]");
+      const newData = oldData.filter(item => item.id !== id);
+      localStorage.setItem(JOURNAL_KEY, JSON.stringify(newData));
+      renderJournals();
+    }
+
+    function clearAllJournals() {
+      const ok = confirm("你確定要清空所有療癒日誌嗎？");
+      if (!ok) return;
+      localStorage.removeItem(JOURNAL_KEY);
+      renderJournals();
+    }
+
+    function renderJournals() {
+      const journalList = document.getElementById("journalList");
+      const data = JSON.parse(localStorage.getItem(JOURNAL_KEY) || "[]");
+
+      if (!data.length) {
+        journalList.innerHTML = `<div class="empty-journal">目前還沒有日誌，等你寫下第一段心情，它就會留在這裡。</div>`;
+        return;
+      }
+
+      journalList.innerHTML = data.map(item => `
+        <div class="journal-item">
+          <div class="journal-meta">${formatTime(item.createdAt)}</div>
+          <div class="journal-content">${item.content}</div>
+          <div class="journal-actions">
+            <button class="small-btn" onclick="deleteJournal(${item.id})">刪除這篇</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
     function prepareDraw() {
       const question = document.getElementById("question").value.trim();
       const questionBox = document.getElementById("questionBox");
@@ -1063,6 +1168,7 @@
         moonTextEl.textContent = getMoonMessage();
       }
       renderHistory();
+      renderJournals();
     });
   </script>
 </body>
