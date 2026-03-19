@@ -335,12 +335,21 @@
         <option value="3">三張占卜（現況 / 建議 / 結果）</option>
       </select>
 
-      <div className="guide">
+      <div style={{
+  marginBottom: "20px",
+  padding: "16px",
+  background: "#fff8f0",
+  borderRadius: "10px",
+  fontSize: "14px",
+  lineHeight: "1.6",
+  color: "#555",
+  textAlign: "center"
+}}>
   在開始之前，先讓自己慢下來。<br />
-  深呼吸三次，放鬆身體與思緒。<br />
-  在心中清楚地想著你的問題。<br />
+  閉上眼睛，深呼吸三次。<br />
+  將注意力放回自己身上，輕輕地想著你的問題。<br />
   當你準備好了，再開始抽牌。
-      </div>
+</div>
       <button id="drawBtn" onclick="prepareDraw()">開始抽牌</button>
       <button id="flipBtn" onclick="flipCards()" disabled>翻牌</button>
 
