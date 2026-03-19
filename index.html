@@ -324,6 +324,29 @@
         height: 245px;
       }
     }
+  .moon-box {
+  max-width: 520px;
+  margin: 0 auto 28px;
+  background: #fffaf4;
+  border: 1px solid #eadfce;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.moon-title {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #b08a64;
+  margin-bottom: 10px;
+}
+
+.moon-content {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #5f5247;
+}
   </style>
 </head>
 <body>
@@ -336,8 +359,14 @@
     <h1>🔮 歡迎來到小白占星</h1>
     <div class="subtitle">
   這是一個陪伴型網站，<br>
-  希望我們的陪伴能夠帶給你些許的安慰。<br><br>
-  🌙 <span id="moonText"></span>
+  希望我們的陪伴能夠帶給你些許的安慰。<br>
+    </div>
+
+<div class="moon-box">
+  <div class="moon-title">給現在的你</div>
+  <div class="moon-content">
+    🌙 <span id="moonText"></span>
+  </div>
 </div>
 <div style="text-align:center; margin-bottom: 24px;">
   <button id="musicBtn" onclick="toggleMusic()" style="max-width: 220px;">
