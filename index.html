@@ -39,8 +39,38 @@
       font-size: 15px;
     }
 
+    .moon-box {
+      max-width: 650px;
+      margin: 0 auto 32px;
+      background: #fffaf4;
+      border: 1px solid #eadfce;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+
+    .moon-title {
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #b08a64;
+      margin-bottom: 6px;
+    }
+
+    .moon-sub {
+      font-size: 13px;
+      color: #a39586;
+      margin-bottom: 10px;
+    }
+
+    .moon-content {
+      font-size: 16px;
+      line-height: 1.9;
+      color: #5f5247;
+    }
+
     .panel {
-      max-width: 560px;
+      max-width: 760px;
       margin: 0 auto 24px;
       background: #ffffff;
       border-radius: 18px;
@@ -89,6 +119,11 @@
     button:disabled {
       background: #d8cfc5;
       cursor: not-allowed;
+    }
+
+    .music-btn-wrap {
+      max-width: 280px;
+      margin: 0 auto 28px;
     }
 
     .guide-box {
@@ -274,7 +309,8 @@
       color: #9a7b57;
     }
 
-    .result-panel {
+    .result-panel,
+    .history-panel {
       max-width: 920px;
       margin: 30px auto 0;
       background: #ffffff;
@@ -282,23 +318,29 @@
       padding: 22px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.08);
       text-align: left;
+    }
+
+    .result-panel {
       display: none;
     }
 
-    .result-panel h2 {
+    .result-panel h2,
+    .history-panel h2 {
       margin-top: 0;
       color: #8c6b4f;
       font-size: 24px;
     }
 
-    .result-panel h3 {
+    .result-panel h3,
+    .history-panel h3 {
       color: #b2875a;
       margin-top: 24px;
       margin-bottom: 10px;
       font-size: 18px;
     }
 
-    .result-panel p {
+    .result-panel p,
+    .history-panel p {
       line-height: 1.95;
       color: #5f5247;
       margin: 0 0 14px;
@@ -308,6 +350,66 @@
       margin-top: 16px;
       color: #8f8175;
       font-size: 14px;
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .small-btn {
+      width: auto;
+      margin-top: 0;
+      padding: 10px 14px;
+      font-size: 14px;
+    }
+
+    .history-list {
+      margin-top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .history-item {
+      background: #fffaf4;
+      border: 1px solid #eadfce;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .history-meta {
+      font-size: 13px;
+      color: #9a8c7f;
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+
+    .history-question {
+      font-weight: bold;
+      color: #6b5b4f;
+      margin-bottom: 8px;
+    }
+
+    .history-cards {
+      color: #5f5247;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .history-reading {
+      color: #6d5f53;
+      line-height: 1.9;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .empty-history {
+      color: #9b8f83;
+      text-align: center;
+      padding: 14px 0 4px;
     }
 
     @media (max-width: 768px) {
@@ -324,74 +426,40 @@
         height: 245px;
       }
     }
-  .moon-box {
-  max-width: 520px;
-  margin: 0 auto 32px;
-  background: #fffaf4;
-  border: 1px solid #eadfce;
-  border-radius: 18px;
-  padding: 22px 22px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-  text-align: center;
-  transition: all 0.3s ease;
-}
-.moon-box:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 40px rgba(0,0,0,0.08);
-
-.moon-title {
-  font-size: 14px;
-  letter-spacing: 2px;
-  color: #b08a64;
-  margin-bottom: 6px;
-}
-.moon-sub {
-  font-size: 13px;
-  color: #a39586;
-  margin-bottom: 10px;
-}
-  
-<div class="moon-sub">
-  也許你現在需要的，只是一點點被理解。
-</div>
-  
-.moon-content {
-  font-size: 16px;
-  line-height: 1.9;
-  color: #5f5247;
-}
   </style>
 </head>
 <body>
 
   <div class="wrapper">
-  <audio id="bgm" loop>
-  <source src="bgm.mp3" type="audio/mpeg">
-  你的瀏覽器不支援音樂播放。
-  </audio>
+    <audio id="bgm" loop>
+      <source src="bgm.mp3" type="audio/mpeg">
+      你的瀏覽器不支援音樂播放。
+    </audio>
+
     <h1>🔮 歡迎來到小白占星</h1>
+
     <div class="subtitle">
-  這是一個陪伴型網站，<br>
-  希望我們的陪伴能夠帶給你些許的安慰。<br>
+      這是一個陪伴型網站，<br>
+      希望我們的陪伴能夠帶給你些許的安慰。
     </div>
 
-<div class="moon-box">
-  <div class="moon-title">給現在的你</div>
-  <div class="moon-content">
-    🌙 <span id="moonText"></span>
-  </div>
-</div>
-<div style="text-align:center; margin-bottom: 24px;">
-  <button id="musicBtn" onclick="toggleMusic()" style="max-width: 220px;">
-    🎵 播放背景音樂
-  </button>
-</div>
+    <div class="moon-box">
+      <div class="moon-title">給現在的你</div>
+      <div class="moon-sub">也許你現在需要的，只是一點點被理解。</div>
+      <div class="moon-content">
+        🌙 <span id="moonText"></span>
+      </div>
+    </div>
+
+    <div class="music-btn-wrap">
+      <button id="musicBtn" onclick="toggleMusic()">🎵 播放背景音樂</button>
+    </div>
 
     <div class="panel">
       <textarea id="question" placeholder="輸入你的問題，例如：這段感情我該如何修復？"></textarea>
 
       <select id="theme">
-        <option value="general">能量指引</option>
+        <option value="general">一般指引</option>
         <option value="love">愛情</option>
         <option value="work">工作</option>
       </select>
@@ -425,9 +493,19 @@
         👉 真正重要的，往往不是外在發生什麼，而是你怎麼面對自己現在的狀態。
       </div>
     </div>
+
+    <div class="history-panel">
+      <div class="history-header">
+        <h2>🕯 我的抽牌紀錄</h2>
+        <button class="small-btn" onclick="clearAllHistory()">清空所有紀錄</button>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </div>
   </div>
 
   <script>
+    const STORAGE_KEY = "xiaobai_tarot_history_v1";
+
     const majorCards = [
       "愚者","魔術師","女祭司","皇后","皇帝","教皇","戀人","戰車",
       "力量","隱者","命運之輪","正義","吊人","死神","節制","惡魔",
@@ -447,89 +525,89 @@
     const cards = [...majorCards, ...minorCards];
 
     const tarotImages = {
-  "愚者":"https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
-  "魔術師":"https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
-  "女祭司":"https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
-  "皇后":"https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
-  "皇帝":"https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
-  "教皇":"https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg",
-  "戀人":"https://upload.wikimedia.org/wikipedia/commons/3/3a/RWS_Tarot_06_Lovers.jpg",
-  "戰車":"https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg",
-  "力量":"https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg",
-  "隱者":"https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg",
-  "命運之輪":"https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
-  "正義":"https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg",
-  "吊人":"https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg",
-  "死神":"https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg",
-  "節制":"https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg",
-  "惡魔":"https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg",
-  "高塔":"https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg",
-  "星星":"https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg",
-  "月亮":"https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg",
-  "太陽":"https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg",
-  "審判":"https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg",
-  "世界":"https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg",
+      "愚者":"https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
+      "魔術師":"https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
+      "女祭司":"https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
+      "皇后":"https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
+      "皇帝":"https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
+      "教皇":"https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg",
+      "戀人":"https://upload.wikimedia.org/wikipedia/commons/3/3a/RWS_Tarot_06_Lovers.jpg",
+      "戰車":"https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg",
+      "力量":"https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg",
+      "隱者":"https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg",
+      "命運之輪":"https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
+      "正義":"https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg",
+      "吊人":"https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg",
+      "死神":"https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg",
+      "節制":"https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg",
+      "惡魔":"https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg",
+      "高塔":"https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg",
+      "星星":"https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg",
+      "月亮":"https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg",
+      "太陽":"https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg",
+      "審判":"https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg",
+      "世界":"https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg",
 
-  "權杖A":"https://upload.wikimedia.org/wikipedia/commons/1/11/Wands01.jpg",
-  "權杖2":"https://upload.wikimedia.org/wikipedia/commons/0/0f/Wands02.jpg",
-  "權杖3":"https://upload.wikimedia.org/wikipedia/commons/f/fe/Wands03.jpg",
-  "權杖4":"https://upload.wikimedia.org/wikipedia/commons/a/a4/Wands04.jpg",
-  "權杖5":"https://upload.wikimedia.org/wikipedia/commons/9/9d/Wands05.jpg",
-  "權杖6":"https://upload.wikimedia.org/wikipedia/commons/3/3b/Wands06.jpg",
-  "權杖7":"https://upload.wikimedia.org/wikipedia/commons/e/e4/Wands07.jpg",
-  "權杖8":"https://upload.wikimedia.org/wikipedia/commons/6/6b/Wands08.jpg",
-  "權杖9":"https://upload.wikimedia.org/wikipedia/commons/4/4d/Wands09.jpg",
-  "權杖10":"https://upload.wikimedia.org/wikipedia/commons/0/0b/Wands10.jpg",
-  "權杖侍者":"https://upload.wikimedia.org/wikipedia/commons/6/6a/Wands11.jpg",
-  "權杖騎士":"https://upload.wikimedia.org/wikipedia/commons/1/16/Wands12.jpg",
-  "權杖皇后":"https://upload.wikimedia.org/wikipedia/commons/0/0d/Wands13.jpg",
-  "權杖國王":"https://upload.wikimedia.org/wikipedia/commons/c/ce/Wands14.jpg",
+      "權杖A":"https://upload.wikimedia.org/wikipedia/commons/1/11/Wands01.jpg",
+      "權杖2":"https://upload.wikimedia.org/wikipedia/commons/0/0f/Wands02.jpg",
+      "權杖3":"https://upload.wikimedia.org/wikipedia/commons/f/fe/Wands03.jpg",
+      "權杖4":"https://upload.wikimedia.org/wikipedia/commons/a/a4/Wands04.jpg",
+      "權杖5":"https://upload.wikimedia.org/wikipedia/commons/9/9d/Wands05.jpg",
+      "權杖6":"https://upload.wikimedia.org/wikipedia/commons/3/3b/Wands06.jpg",
+      "權杖7":"https://upload.wikimedia.org/wikipedia/commons/e/e4/Wands07.jpg",
+      "權杖8":"https://upload.wikimedia.org/wikipedia/commons/6/6b/Wands08.jpg",
+      "權杖9":"https://upload.wikimedia.org/wikipedia/commons/4/4d/Wands09.jpg",
+      "權杖10":"https://upload.wikimedia.org/wikipedia/commons/0/0b/Wands10.jpg",
+      "權杖侍者":"https://upload.wikimedia.org/wikipedia/commons/6/6a/Wands11.jpg",
+      "權杖騎士":"https://upload.wikimedia.org/wikipedia/commons/1/16/Wands12.jpg",
+      "權杖皇后":"https://upload.wikimedia.org/wikipedia/commons/0/0d/Wands13.jpg",
+      "權杖國王":"https://upload.wikimedia.org/wikipedia/commons/c/ce/Wands14.jpg",
 
-  "聖杯A":"https://upload.wikimedia.org/wikipedia/commons/3/36/Cups01.jpg",
-  "聖杯2":"https://upload.wikimedia.org/wikipedia/commons/f/f8/Cups02.jpg",
-  "聖杯3":"https://upload.wikimedia.org/wikipedia/commons/7/7a/Cups03.jpg",
-  "聖杯4":"https://upload.wikimedia.org/wikipedia/commons/3/35/Cups04.jpg",
-  "聖杯5":"https://upload.wikimedia.org/wikipedia/commons/d/d7/Cups05.jpg",
-  "聖杯6":"https://upload.wikimedia.org/wikipedia/commons/1/17/Cups06.jpg",
-  "聖杯7":"https://upload.wikimedia.org/wikipedia/commons/a/ae/Cups07.jpg",
-  "聖杯8":"https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg",
-  "聖杯9":"https://upload.wikimedia.org/wikipedia/commons/2/24/Cups09.jpg",
-  "聖杯10":"https://upload.wikimedia.org/wikipedia/commons/8/84/Cups10.jpg",
-  "聖杯侍者":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Cups11.jpg",
-  "聖杯騎士":"https://upload.wikimedia.org/wikipedia/commons/f/fa/Cups12.jpg",
-  "聖杯皇后":"https://upload.wikimedia.org/wikipedia/commons/6/62/Cups13.jpg",
-  "聖杯國王":"https://upload.wikimedia.org/wikipedia/commons/0/04/Cups14.jpg",
+      "聖杯A":"https://upload.wikimedia.org/wikipedia/commons/3/36/Cups01.jpg",
+      "聖杯2":"https://upload.wikimedia.org/wikipedia/commons/f/f8/Cups02.jpg",
+      "聖杯3":"https://upload.wikimedia.org/wikipedia/commons/7/7a/Cups03.jpg",
+      "聖杯4":"https://upload.wikimedia.org/wikipedia/commons/3/35/Cups04.jpg",
+      "聖杯5":"https://upload.wikimedia.org/wikipedia/commons/d/d7/Cups05.jpg",
+      "聖杯6":"https://upload.wikimedia.org/wikipedia/commons/1/17/Cups06.jpg",
+      "聖杯7":"https://upload.wikimedia.org/wikipedia/commons/a/ae/Cups07.jpg",
+      "聖杯8":"https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg",
+      "聖杯9":"https://upload.wikimedia.org/wikipedia/commons/2/24/Cups09.jpg",
+      "聖杯10":"https://upload.wikimedia.org/wikipedia/commons/8/84/Cups10.jpg",
+      "聖杯侍者":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Cups11.jpg",
+      "聖杯騎士":"https://upload.wikimedia.org/wikipedia/commons/f/fa/Cups12.jpg",
+      "聖杯皇后":"https://upload.wikimedia.org/wikipedia/commons/6/62/Cups13.jpg",
+      "聖杯國王":"https://upload.wikimedia.org/wikipedia/commons/0/04/Cups14.jpg",
 
-  "寶劍A":"https://upload.wikimedia.org/wikipedia/commons/1/1a/Swords01.jpg",
-  "寶劍2":"https://upload.wikimedia.org/wikipedia/commons/9/9e/Swords02.jpg",
-  "寶劍3":"https://upload.wikimedia.org/wikipedia/commons/0/02/Swords03.jpg",
-  "寶劍4":"https://upload.wikimedia.org/wikipedia/commons/b/bf/Swords04.jpg",
-  "寶劍5":"https://upload.wikimedia.org/wikipedia/commons/2/23/Swords05.jpg",
-  "寶劍6":"https://upload.wikimedia.org/wikipedia/commons/2/29/Swords06.jpg",
-  "寶劍7":"https://upload.wikimedia.org/wikipedia/commons/3/34/Swords07.jpg",
-  "寶劍8":"https://upload.wikimedia.org/wikipedia/commons/a/a7/Swords08.jpg",
-  "寶劍9":"https://upload.wikimedia.org/wikipedia/commons/2/2f/Swords09.jpg",
-  "寶劍10":"https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords10.jpg",
-  "寶劍侍者":"https://upload.wikimedia.org/wikipedia/commons/4/4c/Swords11.jpg",
-  "寶劍騎士":"https://upload.wikimedia.org/wikipedia/commons/b/b0/Swords12.jpg",
-  "寶劍皇后":"https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords13.jpg",
-  "寶劍國王":"https://upload.wikimedia.org/wikipedia/commons/3/33/Swords14.jpg",
+      "寶劍A":"https://upload.wikimedia.org/wikipedia/commons/1/1a/Swords01.jpg",
+      "寶劍2":"https://upload.wikimedia.org/wikipedia/commons/9/9e/Swords02.jpg",
+      "寶劍3":"https://upload.wikimedia.org/wikipedia/commons/0/02/Swords03.jpg",
+      "寶劍4":"https://upload.wikimedia.org/wikipedia/commons/b/bf/Swords04.jpg",
+      "寶劍5":"https://upload.wikimedia.org/wikipedia/commons/2/23/Swords05.jpg",
+      "寶劍6":"https://upload.wikimedia.org/wikipedia/commons/2/29/Swords06.jpg",
+      "寶劍7":"https://upload.wikimedia.org/wikipedia/commons/3/34/Swords07.jpg",
+      "寶劍8":"https://upload.wikimedia.org/wikipedia/commons/a/a7/Swords08.jpg",
+      "寶劍9":"https://upload.wikimedia.org/wikipedia/commons/2/2f/Swords09.jpg",
+      "寶劍10":"https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords10.jpg",
+      "寶劍侍者":"https://upload.wikimedia.org/wikipedia/commons/4/4c/Swords11.jpg",
+      "寶劍騎士":"https://upload.wikimedia.org/wikipedia/commons/b/b0/Swords12.jpg",
+      "寶劍皇后":"https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords13.jpg",
+      "寶劍國王":"https://upload.wikimedia.org/wikipedia/commons/3/33/Swords14.jpg",
 
-  "錢幣A":"https://upload.wikimedia.org/wikipedia/commons/f/fd/Pents01.jpg",
-  "錢幣2":"https://upload.wikimedia.org/wikipedia/commons/9/9f/Pents02.jpg",
-  "錢幣3":"https://upload.wikimedia.org/wikipedia/commons/4/42/Pents03.jpg",
-  "錢幣4":"https://upload.wikimedia.org/wikipedia/commons/3/35/Pents04.jpg",
-  "錢幣5":"https://upload.wikimedia.org/wikipedia/commons/9/96/Pents05.jpg",
-  "錢幣6":"https://upload.wikimedia.org/wikipedia/commons/a/a6/Pents06.jpg",
-  "錢幣7":"https://upload.wikimedia.org/wikipedia/commons/6/6a/Pents07.jpg",
-  "錢幣8":"https://upload.wikimedia.org/wikipedia/commons/4/49/Pents08.jpg",
-  "錢幣9":"https://upload.wikimedia.org/wikipedia/commons/f/f0/Pents09.jpg",
-  "錢幣10":"https://upload.wikimedia.org/wikipedia/commons/4/42/Pents10.jpg",
-  "錢幣侍者":"https://upload.wikimedia.org/wikipedia/commons/e/ec/Pents11.jpg",
-  "錢幣騎士":"https://upload.wikimedia.org/wikipedia/commons/d/d5/Pents12.jpg",
-  "錢幣皇后":"https://upload.wikimedia.org/wikipedia/commons/8/88/Pents13.jpg",
-  "錢幣國王":"https://upload.wikimedia.org/wikipedia/commons/1/1c/Pents14.jpg"
-};
+      "錢幣A":"https://upload.wikimedia.org/wikipedia/commons/f/fd/Pents01.jpg",
+      "錢幣2":"https://upload.wikimedia.org/wikipedia/commons/9/9f/Pents02.jpg",
+      "錢幣3":"https://upload.wikimedia.org/wikipedia/commons/4/42/Pents03.jpg",
+      "錢幣4":"https://upload.wikimedia.org/wikipedia/commons/3/35/Pents04.jpg",
+      "錢幣5":"https://upload.wikimedia.org/wikipedia/commons/9/96/Pents05.jpg",
+      "錢幣6":"https://upload.wikimedia.org/wikipedia/commons/a/a6/Pents06.jpg",
+      "錢幣7":"https://upload.wikimedia.org/wikipedia/commons/6/6a/Pents07.jpg",
+      "錢幣8":"https://upload.wikimedia.org/wikipedia/commons/4/49/Pents08.jpg",
+      "錢幣9":"https://upload.wikimedia.org/wikipedia/commons/f/f0/Pents09.jpg",
+      "錢幣10":"https://upload.wikimedia.org/wikipedia/commons/4/42/Pents10.jpg",
+      "錢幣侍者":"https://upload.wikimedia.org/wikipedia/commons/e/ec/Pents11.jpg",
+      "錢幣騎士":"https://upload.wikimedia.org/wikipedia/commons/d/d5/Pents12.jpg",
+      "錢幣皇后":"https://upload.wikimedia.org/wikipedia/commons/8/88/Pents13.jpg",
+      "錢幣國王":"https://upload.wikimedia.org/wikipedia/commons/1/1c/Pents14.jpg"
+    };
 
     const meanings = {
       general: {
@@ -727,6 +805,65 @@
       return "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Tarot_card_back.svg/512px-Tarot_card_back.svg.png";
     }
 
+    function formatTime(dateStr) {
+      const d = new Date(dateStr);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      const h = String(d.getHours()).padStart(2, "0");
+      const min = String(d.getMinutes()).padStart(2, "0");
+      return `${y}/${m}/${day} ${h}:${min}`;
+    }
+
+    function getThemeText(theme) {
+      if (theme === "love") return "愛情";
+      if (theme === "work") return "工作";
+      return "一般指引";
+    }
+
+    function getSpreadText(spread) {
+      return spread === 3 ? "三張占卜（現況 / 建議 / 結果）" : "單張占卜";
+    }
+
+    function saveHistory(record) {
+      const oldData = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      oldData.unshift(record);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(oldData));
+      renderHistory();
+    }
+
+    function clearAllHistory() {
+      const ok = confirm("你確定要清空所有抽牌紀錄嗎？");
+      if (!ok) return;
+      localStorage.removeItem(STORAGE_KEY);
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const historyList = document.getElementById("historyList");
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+      if (!data.length) {
+        historyList.innerHTML = `<div class="empty-history">目前還沒有抽牌紀錄，等你抽完第一組牌，它就會留在這裡。</div>`;
+        return;
+      }
+
+      historyList.innerHTML = data.map(item => `
+        <div class="history-item">
+          <div class="history-meta">
+            ${formatTime(item.createdAt)} ｜ ${getThemeText(item.theme)} ｜ ${getSpreadText(item.spread)}
+          </div>
+          <div class="history-question">
+            ${item.question ? `問題：${item.question}` : "問題：未填寫（作為當下能量提醒）"}
+          </div>
+          <div class="history-cards">
+            ${item.cards.map(card => `• ${card.position}：${card.name}（${card.orientation}）`).join("<br>")}
+          </div>
+          <div class="history-reading">${item.reading}</div>
+        </div>
+      `).join("");
+    }
+
     function prepareDraw() {
       const question = document.getElementById("question").value.trim();
       const questionBox = document.getElementById("questionBox");
@@ -809,9 +946,27 @@
       status.innerHTML = "牌面已展開，請慢慢感受它想對你說的話。";
 
       setTimeout(() => {
-        detailResult.innerHTML = buildReading();
+        const readingHtml = buildReading();
+        detailResult.innerHTML = readingHtml;
         resultPanel.style.display = "block";
         resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        const question = document.getElementById("question").value.trim();
+        const positions = currentSpread === 3 ? ["現況", "建議", "結果"] : ["你的牌"];
+
+        saveHistory({
+          createdAt: new Date().toISOString(),
+          question,
+          theme: currentTheme,
+          spread: currentSpread,
+          cards: currentDraw.map((item, index) => ({
+            position: positions[index],
+            name: item.card,
+            orientation: item.orientation
+          })),
+          reading: detailResult.innerText.trim()
+        });
+
       }, currentDraw.length * 280 + 700);
     }
 
@@ -867,42 +1022,48 @@
       `;
     }
 
-  const moonMessages = [
-  "你不需要一直撐著，慢一點也沒關係，現在先照顧好自己就好。",
-  "有些挫折只是過程，你其實正在慢慢變好。",
-  "想太多的時候，記得回到現在，事情沒有你想得那麼複雜。",
-  "你的感受是最重要的，不需要一直將自己藏起來。",
-  "你可以閃耀，但不需要證明自己是值得被愛的。",
-  "慢慢來就好，你已經做得比自己以為的更好了。",
-  "關係沒辦法完美，而我們彼此需要的只是真誠與自在。",
-  "有些情緒不是阻礙，而是提醒你需要被照顧。",
-  "在一切都不確定的時候，我們仍然可以繼續往前走。",
-  "你不需要一直堅強，偶爾放鬆一下也沒關係。",
-  "做自己就好，不需要為了誰改變本質。",
-  "你的溫柔不是脆弱，而是一種真誠的體貼。"
-];
+    const moonMessages = [
+      "你不需要一直撐著，慢一點也沒關係，現在先照顧好自己就好。",
+      "有些不安只是過程，你其實正在慢慢變穩。",
+      "想太多的時候，記得回到當下，事情沒有你想得那麼複雜。",
+      "你的感受很重要，不需要一直壓著自己。",
+      "你可以閃耀，但不需要證明自己是值得被愛的。",
+      "慢慢來就好，你已經做得比自己想像中更多了。",
+      "關係不需要完美，只需要真實與舒服。",
+      "有些情緒不是問題，而是提醒你需要被看見。",
+      "你可以不確定，但仍然可以繼續往前走。",
+      "你不需要一直堅強，偶爾放鬆也沒關係。",
+      "做自己就好，不需要為了誰改變本質。",
+      "你的溫柔不是脆弱，而是一種力量。"
+    ];
 
-function getMoonMessage() {
-  const now = Date.now();
-  const hours60 = 1000 * 60 * 60 * 60;
-  const index = Math.floor(now / hours60) % 12;
-  return moonMessages[index];
-}
-document.getElementById("moonText").innerText = getMoonMessage();
+    function getMoonMessage() {
+      const now = Date.now();
+      const hours60 = 1000 * 60 * 60 * 60;
+      const index = Math.floor(now / hours60) % 12;
+      return moonMessages[index];
+    }
 
-function toggleMusic() {
-  const bgm = document.getElementById("bgm");
-  const musicBtn = document.getElementById("musicBtn");
+    function toggleMusic() {
+      const bgm = document.getElementById("bgm");
+      const musicBtn = document.getElementById("musicBtn");
 
-  if (bgm.paused) {
-    bgm.play();
-    musicBtn.textContent = "⏸ 暫停背景音樂";
-  } else {
-    bgm.pause();
-    musicBtn.textContent = "🎵 播放背景音樂";
-  }
-}
-</script>
-  
+      if (bgm.paused) {
+        bgm.play();
+        musicBtn.textContent = "⏸ 暫停背景音樂";
+      } else {
+        bgm.pause();
+        musicBtn.textContent = "🎵 播放背景音樂";
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+      const moonTextEl = document.getElementById("moonText");
+      if (moonTextEl) {
+        moonTextEl.textContent = getMoonMessage();
+      }
+      renderHistory();
+    });
+  </script>
 </body>
 </html>
