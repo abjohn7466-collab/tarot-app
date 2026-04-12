@@ -458,7 +458,7 @@
   .storage-note {
   margin-top: 10px;
   color: #9a8c7f;
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.8;
 }
   </style>
@@ -1112,36 +1112,6 @@
     <p>牌面已經展開，請稍等，正在為你整理更完整的訊息⋯</p>
   `;
 }
-
-      const [present, advice, result] = currentDraw;
-
-      return `
-        <h3>現況｜${present.card}（${present.orientation}）</h3>
-        <p>${present.meaning}</p>
-
-        <h3>建議｜${advice.card}（${advice.orientation}）</h3>
-        <p>${advice.meaning}</p>
-
-        <h3>結果｜${result.card}（${result.orientation}）</h3>
-        <p>${result.meaning}</p>
-
-        <h3>整體來看</h3>
-        <p>
-          你這次選的是${themeLabel()}主題，所以這組牌不是在抽象地談人生，而是比較直接地回到你目前最在意的領域。
-        </p>
-        <p>
-          現況這張牌在說明你眼前真正的狀態；建議這張牌指出你接下來比較適合採取的態度；而結果這張牌，則是在溫柔地提醒你，如果你照現在的方式走下去，事情大致會往什麼方向慢慢展開。
-        </p>
-        <p>
-          ${present.card} 讓你看到現在的核心位置，${advice.card} 是這組牌最值得你聽進去的地方，而 ${result.card} 並不是一個生硬的定論，而是一個趨勢提醒。它想讓你明白：未來不是被寫死的，而是會隨著你現在怎麼理解自己、怎麼回應這件事，而慢慢改變。
-        </p>
-        ${
-          question
-            ? `<p>如果回到你一開始問的「${question}」，這組牌比較像在告訴你：答案不是單純的是或不是，也不是立刻要你做出最完美的決定。它更像是在陪你慢慢釐清，現在的你到底站在哪裡，又最需要什麼樣的下一步。</p>`
-            : ""
-        }
-      `;
-    }
 
     const moonMessages = [
       "你不需要一直撐著，慢一點也沒關係，現在先照顧好自己就好。",
