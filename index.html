@@ -525,14 +525,14 @@
       <h2>✨ 小白整體解讀</h2>
       <div id="detailResult"></div>
       <div id="aiResult" style="
-            margin-top: 20px;
-            padding: 18px;
-            background: #fffaf5;
-            border-radius: 14px;
-            line-height: 1.9;
-            color: #5f5247;
-            display: none;
-            "></div>
+  margin-top: 20px;
+  padding: 18px;
+  background: #fffaf5;
+  border-radius: 14px;
+  line-height: 1.9;
+  color: #5f5247;
+  display: none;
+"></div>
       <div class="footer-note">
         👉 真正重要的，往往不是外在發生什麼，而是你怎麼面對自己現在的狀態。
       </div>
@@ -1099,14 +1099,13 @@
       return "一般";
     }
 
-    function buildReading() {
+   function buildReading() {
   const question = document.getElementById("question").value.trim();
 
-  let cardsText = currentDraw.map((item, i) => {
+  let cardsText = currentDraw.map((item) => {
     return `${item.card}（${item.orientation}）：${item.meaning}`;
   }).join("\n");
 
-  // 👉 呼叫 AI
   generateAIReading(question, cardsText);
 
   return `
@@ -1193,7 +1192,7 @@
   aiBox.innerHTML = "正在整理你的訊息⋯";
 
   try {
-    const response = await fetch("https://你的後端網址", {
+    const response = await fetch("http://localhost:3000/api/tarot-reading", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1207,9 +1206,13 @@
 
     const data = await response.json();
 
-    aiBox.innerHTML = data.reply;
-
+    if (data.reply) {
+      aiBox.innerHTML = data.reply.replace(/\n/g, "<br><br>");
+    } else {
+      aiBox.innerHTML = "目前訊息有點混亂，請稍後再試一次。";
+    }
   } catch (error) {
+    console.error(error);
     aiBox.innerHTML = "目前訊息有點混亂，請稍後再試一次。";
   }
 }
