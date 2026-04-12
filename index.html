@@ -524,15 +524,6 @@
     <div class="result-panel" id="resultPanel">
       <h2>✨ 小白整體解讀</h2>
       <div id="detailResult"></div>
-      <div id="aiResult" style="
-  margin-top: 20px;
-  padding: 18px;
-  background: #fffaf5;
-  border-radius: 14px;
-  line-height: 1.9;
-  color: #5f5247;
-  display: none;
-"></div>
       <div class="footer-note">
         👉 真正重要的，往往不是外在發生什麼，而是你怎麼面對自己現在的狀態。
       </div>
@@ -1102,14 +1093,77 @@
    function buildReading() {
   const question = document.getElementById("question").value.trim();
 
-  let cardsText = currentDraw.map((item) => {
-    return `${item.card}（${item.orientation}）：${item.meaning}`;
-  }).join("\n");
+  if (currentSpread === 1) {
+    const item = currentDraw[0];
 
-  generateAIReading(question, cardsText);
+    return `
+      <h3>${themeLabel()}主題｜${item.card}（${item.orientation}）</h3>
+      <p>${item.meaning}</p>
+      <p>
+        這張牌比較像是在陪你看見，你現在真正需要面對的，不一定只是事情本身，
+        而是你內在已經累積了什麼感受、什麼拉扯、什麼還沒有被好好說出口的聲音。
+      </p>
+      <p>
+        ${
+          question
+            ? `如果回到你剛剛問的「${question}」，我會覺得這張牌不是急著要你立刻做決定，
+            而是想先陪你把焦點放回自己身上。也許答案不一定會馬上出現，但當你越誠實地看見自己，
+            下一步反而會慢慢清楚。`
+            : `如果你這次沒有特別帶著問題來，那這張牌就比較像是一個當下提醒：
+            你現在的狀態值得被看見，也值得被溫柔地理解。`
+        }
+      </p>
+      <p>
+        你現在不一定需要立刻變得很勇敢、很果斷、很清楚。
+        有時候真正重要的，只是先承認：自己正在經歷一些什麼。
+      </p>
+    `;
+  }
+
+  const [present, advice, result] = currentDraw;
 
   return `
-    <p>牌面已經展開，請稍等，正在為你整理更完整的訊息⋯</p>
+    <h3>現況｜${present.card}（${present.orientation}）</h3>
+    <p>${present.meaning}</p>
+
+    <h3>建議｜${advice.card}（${advice.orientation}）</h3>
+    <p>${advice.meaning}</p>
+
+    <h3>結果｜${result.card}（${result.orientation}）</h3>
+    <p>${result.meaning}</p>
+
+    <h3>整體來看</h3>
+    <p>
+      這組牌比較像是在陪你慢慢整理：你現在正站在哪裡、心裡真正卡住的是什麼，
+      以及接下來比較適合用什麼樣的方式面對自己。
+    </p>
+    <p>
+      ${present.card} 比較像是在讓你看見目前最真實的狀態。很多時候，真正讓人辛苦的，
+      不只是外在事情本身，而是我們一邊撐著、一邊不敢承認自己其實已經很累了。
+    </p>
+    <p>
+      而 ${advice.card} 想提醒你的，不一定是立刻做出劇烈改變，
+      而是先把自己帶回一個比較穩的位置。當你不再只是被情緒推著走，
+      你才會比較知道什麼是你真正想選的。
+    </p>
+    <p>
+      至於 ${result.card}，它不是在替你下定論，而是讓你看見：
+      如果你願意用比較誠實、比較貼近自己的方式往前走，事情可能會慢慢往哪個方向展開。
+    </p>
+    <p>
+      ${
+        question
+          ? `如果回到你一開始問的「${question}」，我會覺得這組牌不是在催你現在就做出完美答案，
+          而是想先讓你明白：你不需要一邊否定自己、一邊逼自己前進。先理解自己，答案才會比較靠近你。`
+          : `如果這次你沒有特別問什麼，那這組牌就像是一段當下的陪伴。
+          它不是要你馬上變好，而是想讓你知道，你現在的感受其實都很有意義。`
+      }
+    </p>
+    <p>
+      如果你願意，也可以再往下想想：
+      你現在最不敢承認的感受是什麼？
+      而你真正想要的，其實又是什麼？
+    </p>
   `;
 }
 
@@ -1156,36 +1210,7 @@
       renderHistory();
       renderJournals();
     });
-    async function generateAIReading(question, cardsText) {
-  const aiBox = document.getElementById("aiResult");
-  aiBox.style.display = "block";
-  aiBox.innerHTML = "正在整理你的訊息⋯";
-
-  try {
-    const response = await fetch("http://localhost:3000/api/tarot-reading", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        question: question,
-        cards: cardsText,
-        theme: currentTheme
-      })
-    });
-
-    const data = await response.json();
-
-    if (data.reply) {
-      aiBox.innerHTML = data.reply.replace(/\n/g, "<br><br>");
-    } else {
-      aiBox.innerHTML = "目前訊息有點混亂，請稍後再試一次。";
-    }
-  } catch (error) {
-    console.error(error);
-    aiBox.innerHTML = "目前訊息有點混亂，請稍後再試一次。";
-  }
-}
+    
   </script>
 </body>
 </html>
