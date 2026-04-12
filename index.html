@@ -524,6 +524,15 @@
     <div class="result-panel" id="resultPanel">
       <h2>✨ 小白整體解讀</h2>
       <div id="detailResult"></div>
+      <div id="aiResult" style="
+            margin-top: 20px;
+            padding: 18px;
+            background: #fffaf5;
+            border-radius: 14px;
+            line-height: 1.9;
+            color: #5f5247;
+            display: none;
+            "></div>
       <div class="footer-note">
         👉 真正重要的，往往不是外在發生什麼，而是你怎麼面對自己現在的狀態。
       </div>
@@ -1091,20 +1100,19 @@
     }
 
     function buildReading() {
-      const question = document.getElementById("question").value.trim();
+  const question = document.getElementById("question").value.trim();
 
-      if (currentSpread === 1) {
-        const item = currentDraw[0];
-        return `
-          <h3>${themeLabel()}主題｜${item.card}（${item.orientation}）</h3>
-          <p>${item.meaning}</p>
-          <p>${
-            question
-              ? `如果回到你剛剛問的「${question}」，這張牌比較像是在陪你把焦點放回現在的自己。它不是在替你做決定，而是在提醒你：真正重要的，常常不是外在立刻給你一個答案，而是你能不能先誠實地看見自己現在的狀態與需要。`
-              : "這張牌像是一個溫柔的當下提醒。它不一定要你馬上做出改變，而是先陪你停下來，看見自己內心真正正在經歷什麼。"
-          }</p>
-        `;
-      }
+  let cardsText = currentDraw.map((item, i) => {
+    return `${item.card}（${item.orientation}）：${item.meaning}`;
+  }).join("\n");
+
+  // 👉 呼叫 AI
+  generateAIReading(question, cardsText);
+
+  return `
+    <p>牌面已經展開，請稍等，正在為你整理更完整的訊息⋯</p>
+  `;
+}
 
       const [present, advice, result] = currentDraw;
 
@@ -1179,6 +1187,32 @@
       renderHistory();
       renderJournals();
     });
+    async function generateAIReading(question, cardsText) {
+  const aiBox = document.getElementById("aiResult");
+  aiBox.style.display = "block";
+  aiBox.innerHTML = "正在整理你的訊息⋯";
+
+  try {
+    const response = await fetch("https://你的後端網址", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        question: question,
+        cards: cardsText,
+        theme: currentTheme
+      })
+    });
+
+    const data = await response.json();
+
+    aiBox.innerHTML = data.reply;
+
+  } catch (error) {
+    aiBox.innerHTML = "目前訊息有點混亂，請稍後再試一次。";
+  }
+}
   </script>
 </body>
 </html>
